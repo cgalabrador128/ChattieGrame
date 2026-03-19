@@ -1,2 +1,2 @@
-# Multipurpose-Application
-Side Project
+# ChattieGrame
+Messaging and Collaborative Productivity Application
