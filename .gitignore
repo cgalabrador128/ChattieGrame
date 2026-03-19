@@ -1,0 +1,18 @@
+# python and flask
+__pycache__/
+*.py[cod]
+*$py.class
+instance/
+.webassets-cache
+.env
+.flaskenv
+
+# virtual environemnt
+
+chattiegrame.venv/
+.venv/
+venv/
+env/
+
+# PyCharm
+.idea/
