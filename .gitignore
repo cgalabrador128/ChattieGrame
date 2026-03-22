@@ -9,7 +9,6 @@ instance/
 
 # virtual environemnt
 
-chattiegrame.venv/
 .venv/
 venv/
 env/
