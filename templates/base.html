@@ -3,16 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='chattiegrameicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='footer.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='resources/chattiegrameicon.ico') }}">
     <title>ChattieGrame</title>
     {% block head %}{% endblock %}
 </head>
 <body>
     <div id ="header">
-        <img src ='{{ url_for('static', filename='chattiegrameicon.ico') }}' id="icon">
+        <img src ='{{ url_for('static', filename='resources/chattiegrameicon.ico') }}' id="icon">
         <h1>CHATTIEGRAME</h1>
     </div>
-     {% block body %}{% endblock %}
+    <!--{% include 'navigation.html' %}-->
+    {% block body %}{% endblock %}
+    <div class ="footer-basic">
+        <footer>
+            <p class ="copyright">cgalabrador128 & Geromeeee © 2026</p>
+        </footer>
+    </div>
 </body>
+</html>
