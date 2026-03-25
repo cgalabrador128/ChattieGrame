@@ -2,28 +2,37 @@
 nav {
     background-color: #d9d9d9;
     height:100%;
-    width:100px;
+    width:120px;
     margin:0;
     margin-top: -15px;
     padding: 0;
     position:fixed;
-    overflow: auto;
+    overflow: hidden;
 }
 ul {
     list-style-type: none;
     margin:0;
     padding: 0;
     position: relative;
+    overflow: hidden;
 }
 li a {
     display: block;
     color: black;
     padding: 8px 16px;
     text-decoration: none;
+    text-align: center;
     background-color: #b4b4b4;
+    overflow: hidden;
 }
 li a:hover {
     font-family: Poppins-Bold;
     background-color: #ffbd59;
     color: black;
+    overflow: hidden;
+}
+li a img{
+    height:60px;
+    width: 60px;
+    overflow: hidden;
 }
