@@ -1,8 +1,16 @@
 import os
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template
+from supabase import create_client, Client
+from dotenv import load_dotenv
+
+load_dotenv()
+
+supabase: Client = create_client(
+    os.environ.get("SUPABASE_URL"),
+    os.environ.get("SUPABASE_PUBLISHABLE_KEY")
+)
 
 app = Flask(__name__)
-
 
 @app.route('/')
 def index():
