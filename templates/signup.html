@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}"/>
 {% endblock %}
 
 {% block body %}
@@ -10,8 +10,8 @@
             <div class="signup-header">
                 <h1>Welcome to ChattieGrame</h1>
                 <div class="signup-form">
-                    <h2>Login</h2>
-                    <form action="/login" method="post">
+                    <h2>Signup</h2>
+                    <form action="/signup" method="post">
                         <div class="email-input">
                             <label>Email</label>
                             <input type="email" placeholder="Email" required>
@@ -21,18 +21,20 @@
                             <input type="password" placeholder="Password" required>
                         </div>
                         <div class="submit">
-                            <button type="submit">Login</button>
+                            <button type="submit">Signup</button>
                         </div>
                     </form>
-                    <div class="login-footer">
-                        <a href="/signup">Sign up</a>
+                    <div class="signup-footer">
+                        <a href="/login">Login</a>
                     </div>
 
                 </div>
             </div>
         </div>
+
+
     </div>
-{% include 'navigation.html' %}
+    {% include 'navigation.html' %}
     <div class ="footer-basic">
         <footer>
             <p class ="copyright">cgalabrador128 & Geromeeee © 2026</p>
