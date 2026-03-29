@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='message.css') }}">
+{% endblock %}
+
+{% block body %}
+{% include 'navigation.html' %}
+<div id ="sidebar-message" class="general">
+    <ul>
+        <li><a>Messages</a></li>
+        <li><a>Requests</a></li>
+    </ul>
+</div>
+<div id="main-message-body" class="general">
+ack
+</div>
+{% endblock %}
