@@ -6,6 +6,7 @@ import uuid
 app = Flask(__name__)
 app.secret_key = str(uuid.uuid4())
 
+
 @app.route('/')
 @app.route('/login', methods=['GET', 'POST'])
 def login():

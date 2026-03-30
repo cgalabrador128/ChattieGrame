@@ -7,21 +7,19 @@
 {% block body %}
 {% include 'navigation.html' %}
 <div id ="sidebar-message" class="general">
-    <!--
-     <table>
+    <table>
         <tr id="message-header">
-            <td id ="message"><a href = "messages">Messages</a></td>
-            <td><a href = "requests">Requests</a></td>
+            <td><a href = "messages">Messages</a></td>
+            <td id="request"><a href = "requests">Requests</a></td>
         </tr>
-        <tr class="message-list">
-        <td>tets</td>
-        Display the list of previous messages of all contact lists
+        <div class="message-list">
+        <tr ></tr>
+        <!-- Display the list of previous messages of all contact lists
         {% for message in messages %}
         <tr><td><a href="{{ url_for('view_message', message_id=message.id) }}">{{ message.subject }}</a></td></tr>
-        {% endfor %}
-        </tr>
-    </table> 
-    -->
+        {% endfor %}-->
+        </div>
+    </table>
 </div>
 <div id="main-message-body" class="general">
     <div id="picture-and-name">

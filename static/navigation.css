@@ -1,13 +1,16 @@
 @import url('fonts.css');
 nav {
     background-color: #d9d9d9;
-    height:100%;
-    width:120px;
+    height: 100vh;
+    width:15%;
+    max-width: 120px;
+    /*width:120px;*/
     margin:0;
     margin-top: 25px;
     left: 0;
     position:fixed;
     overflow: hidden;
+    display:if(media(max-width: 500px): none; else: block)!important;
 }
 ul {
     list-style-type: none;
@@ -15,11 +18,13 @@ ul {
     padding: 0;
     position: relative;
     overflow: hidden;
+   
 }
 li a {
     display: block;
     color: black;
     padding: 8px 16px;
+    font-size: 10px;
     text-decoration: none;
     text-align: center;
     background-color: #b4b4b4;
@@ -32,7 +37,18 @@ li a:hover {
     overflow: hidden;
 }
 li a img{
-    height:60px;
-    width: 60px;
+    min-width: 40px;
+    min-height: 40px;
+    height:70%;
+    width: 70%;
+    max-height:60px;
+    max-width: 60px;
     overflow: hidden;
+}
+
+@media screen and (max-width: 1000px) {
+    nav {
+        width: 15%;
+        max-width: 80px;
+    }
 }
