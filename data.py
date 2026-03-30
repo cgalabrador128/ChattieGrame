@@ -59,8 +59,11 @@ def loginUser(email, password):
 
         if response.user:
             print("Login successful.")
-            return response.user
-
+            user_data_response = supabase.table('app_user').select("userid").eq("userid", response.user.id).execute()
+            #return response.user
+            print(user_data_response.data[0]['userid'])
+            return user_data_response.data[0]['userid']
+        
     except Exception as e:
         print("Login failed with error: ", e)
         return None
