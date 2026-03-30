@@ -14,7 +14,7 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        user = loginUser(email, password)
+        user = dat.loginUser(email, password)
 
         if user and email and password:
             flash('Login successful!')
