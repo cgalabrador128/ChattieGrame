@@ -6,6 +6,7 @@ import uuid
 app = Flask(__name__)
 app.secret_key = str(uuid.uuid4())
 
+
 @app.route('/')
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -44,13 +45,18 @@ def signup():
 def overview():
     return render_template('overview.html')
 @app.route('/messages')
-def route():
+def messages():
     return render_template('messages.html')
 
-"""
-@app.route('/home')
-def route():
-    return render_template('index.html')
-"""
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
+@app.route('/groups')
+def groups():
+    return render_template('groups.html')
+@app.route('/requests')
+def requests():
+    return render_template('requests.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -10,18 +10,27 @@
     {% block head %}{% endblock %}
 </head>
 <body>
-{% block header %}
-    <div id="header">
-        <img src='{{ url_for('static', filename='resources/chattiegrameicon.ico') }}' id="icon">
-        <h1>CHATTIEGRAME</h1>
+<div class="container">
+    <div class="header">
+        <div class ="header-spacer">
+            <img src='{{ url_for('static', filename='resources/chattiegrameicon.ico') }}' id="icon">
+            <h1>CHATTIEGRAME</h1>
+        </div>
     </div>
-    <div class="empty"></div>
-{% endblock %}
-{% block body %}{% endblock %}
-<div class="footer-basic">
-    <footer>
-        <p class="copyright">cgalabrador128 & Geromeeee © 2026</p>
-    </footer>
+    <div class = "menu">
+    {% include 'navigation.html' %}
+    </div>
+    <div class="content">
+    {% block body %}{% endblock %}
+    </div>
+    <div class="footer-basic" class="footer">
+        <footer>
+            <p class="copyright">cgalabrador128 & Geromeeee © 2026</p>
+            <ul>
+                <li class="social"><a href="https://github.com/Geromeeee/ChattieGrame" target="_blank" ><img src="{{ url_for('static', filename='resources/social.png') }}" alt="Github"></a></li>
+            </ul>
+         </footer>
+    </div>
 </div>
 </body>
 </html>

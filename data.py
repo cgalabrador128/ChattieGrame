@@ -17,8 +17,6 @@ supabase_admin: Client =create_client(
     os.environ.get("SUPABASE_URL"),
     os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
 )
-#print(supabase_admin.table("app_user").select("*").execute())
-#result = supabase_admin.table('app_user').select('*').execute()
 
 def signupUser(name, email, password):
     try:
