@@ -1,3 +1,5 @@
+@import url('fonts.css');
+
 .message-container {
     display:grid;
     grid-template-areas: 
@@ -17,6 +19,7 @@
     "message-item request-item"
     "message-sidebar-content message-sidebar-content";
     grid-template-columns: 1fr 1fr;
+    
 }
 .message-container div.message-sidebar div{
     background-color: #d9d9d9;
@@ -29,6 +32,7 @@
     justify-content: center;
     height: 65px;
     overflow: hidden;
+    
 }
 
 .message-container div.message-sidebar div.request-item{
@@ -48,13 +52,23 @@
     padding-left:30px;
     padding-right: 30px;
     margin:5px;
+    font-family: Poppins;
 }
 
 .message-container div.message-sidebar a:hover{
     background-color: white;
     border-radius: 15px;
+    
 }
-.message-container div.message-sidebar div.message-item a{
+.message-container div.message-sidebar div.message-item #truelaloo{
+    background-color: white;
+    border-radius: 15px;
+    padding: 10px;
+    padding-left:30px;
+    padding-right: 30px;
+}
+
+.message-container div.message-sidebar div.request-item #truelaloo{
     background-color: white;
     border-radius: 15px;
     padding: 10px;

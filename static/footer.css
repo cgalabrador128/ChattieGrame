@@ -1,8 +1,6 @@
 .footer-basic {
-  padding:40px 0;
   background-color:#ffffff;
   color:#4b4c4d;
-
 }
 
 .footer-basic ul {
@@ -52,7 +50,6 @@
 }
 
 .footer-basic .copyright {
-  margin-top:15px;
   text-align:center;
   font-size:13px;
   color:#aaa;
