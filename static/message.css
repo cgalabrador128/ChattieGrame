@@ -1,80 +1,95 @@
-#sidebar-message{
-    margin:0;
-    left:if(media(max-width: 500px): 1%; else: 9%);
-    top:60px;
-    width: 30vw;
-    position:absolute;
-    display: flex;
+.message-container {
+    display:grid;
+    grid-template-areas: 
+    "message-sidebar message-content";
+    grid-template-columns: 1fr 3fr;
+    gap:3px;
+    margin-top: 3vh;
 }
-#sidebar-message table{
-    width: 100%;
+.message-container div{
+    background-color: #d9d9d9;
+}
+
+/*side-bar area*/
+.message-container div.message-sidebar{
+    display: grid;
+    grid-template-areas: 
+    "message-item request-item"
+    "message-sidebar-content message-sidebar-content";
+    grid-template-columns: 1fr 1fr;
+}
+.message-container div.message-sidebar div{
+    background-color: #d9d9d9;
+    justify-content: center;
+}
+
+.message-container div.message-sidebar div.message-item{
+    grid-area: message-item;
     background-color: #ffbd59;
+    justify-content: center;
+    height: 65px;
+    overflow: hidden;
 }
-#sidebar-message a{
+
+.message-container div.message-sidebar div.request-item{
+    grid-area: request-item;
+    background-color: #ffbd59;
+    justify-content: center;
+    height: 65px;
+    overflow: hidden;
+}
+
+.message-container div.message-sidebar a{
     text-decoration: none;
     color: black;
     text-align: center;
-    
-}
-#sidebar-message #message-header{
-    font-size: 20px;
-    font-weight: bold;
-    border-bottom: 2px solid black;
-    text-align: center;
-    padding-right: 5%;
+    justify-content: center;
+    padding:10px;
+    padding-left:30px;
+    padding-right: 30px;
+    margin:5px;
 }
 
-#sidebar-message #message-header td{
+.message-container div.message-sidebar a:hover{
+    background-color: white;
+    border-radius: 15px;
+}
+.message-container div.message-sidebar div.message-item a{
+    background-color: white;
+    border-radius: 15px;
     padding: 10px;
-    text-align: center;
+    padding-left:30px;
+    padding-right: 30px;
+}
+.message-container div.message-sidebar div.message-sidebar-content{
+    grid-area: message-sidebar-content;
+    background-color: #d9d9d9;
+    overflow-y: scroll;
+    height:70vh;
+}
+/* message-content area*/
+
+.message-container div.message-content{
+    display:grid;
+    grid-template-areas: 
+    "message-content-header"
+    "message-content-body";
+    grid-template-rows: 0.5fr 6fr;
+}
+
+.message-container div.message-content div{
+    background-color: #d9d9d9;
+}
+
+.message-container div.message-content div.message-content-header{
+    grid-area: message-content-header;
     background-color: #ffbd59;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-#sidebar-message tr{
-    border-bottom: 1px solid black;
-    text-align: center;
+    height: 65px;
+    justify-content: center;
+    overflow: hidden;
 }
 
-#sidebar-message #message-header td:hover{
-    background-color: #ffffff;
-    border-radius: 20px;
-}
-
-.message-list{
-    padding: 10px;
-    background-color: #d9d9d9;
-    padding-bottom: 300px;
-    margin:0;
-}
-
-#main-message-body{
-    margin:0;
-    right: 10px;
-    top:60px;
-    width:55vw;
-    height: 500px;
-    background-color: #d9d9d9;
-    position: absolute;
-}
-
-#sidebar-message::-webkit-scrollbar {
-    width: 8px;
-}
-
-#sidebar-message::-webkit-scrollbar-track {
-    background: #f1f1f1; 
-}
-
-#sidebar-message::-webkit-scrollbar-thumb {
-    background: #888; 
-}
-
-#sidebar-message::-webkit-scrollbar-thumb:hover {
-    background: #555; 
-}
-
-#sidebar-message #message-header #message{
-    border-radius: 20px;
-    background-color: #ffffff;
+.message-container div.message-content div.message-content-body{
+    grid-area: message-content-body;
+    overflow-y: scroll;
 }

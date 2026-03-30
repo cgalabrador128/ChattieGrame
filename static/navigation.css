@@ -1,24 +1,18 @@
 @import url('fonts.css');
 nav {
     background-color: #d9d9d9;
-    height: 100vh;
-    width:15%;
-    max-width: 120px;
-    /*width:120px;*/
     margin:0;
-    margin-top: 6px;
     left: 0;
-    position:fixed;
     overflow: hidden;
+    position: fixed;
+    height: 100vh;
     display:if(media(max-width: 500px): none; else: block)!important;
 }
 ul {
     list-style-type: none;
     margin:0;
-    padding: 0;
-    position: relative;
+    padding:0;
     overflow: hidden;
-   
 }
 li a {
     display: block;
@@ -46,9 +40,9 @@ li a img{
     overflow: hidden;
 }
 
-@media screen and (max-width: 1000px) {
-    nav {
-        width: 15%;
-        max-width: 80px;
+@media screen and (max-width:1000px) {
+    nav{
+        width: 120px;
+        max-width: 9%;
     }
 }

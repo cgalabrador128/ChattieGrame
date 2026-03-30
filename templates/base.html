@@ -10,21 +10,24 @@
     {% block head %}{% endblock %}
 </head>
 <body>
-    <div id="header">
-        <img src='{{ url_for('static', filename='resources/chattiegrameicon.ico') }}' id="icon">
-        <h1>CHATTIEGRAME</h1>
+<div class="container">
+    <div class="header">
+        <div class ="header-spacer">
+            <img src='{{ url_for('static', filename='resources/chattiegrameicon.ico') }}' id="icon">
+            <h1>CHATTIEGRAME</h1>
+        </div>
     </div>
-<<<<<<< HEAD
-<!--{% include 'navigation.html' %}-->
-=======
-    <div class="empty"></div>
-{% endblock %}
->>>>>>> 2bfa02aed036b5911b6f5cbe4cc298dd1f2fea75
-{% block body %}{% endblock %}
-<div class="footer-basic">
-    <footer>
-        <p class="copyright">cgalabrador128 & Geromeeee © 2026</p>
-    </footer>
+    <div class = "menu">
+    {% include 'navigation.html' %}
+    </div>
+    <div class="content">
+    {% block body %}{% endblock %}
+    </div>
+    <div class="footer-basic" class="footer">
+        <footer>
+            <p class="copyright">cgalabrador128 & Geromeeee © 2026</p>
+        </footer>
+    </div>
 </div>
 </body>
 </html>
