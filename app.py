@@ -57,6 +57,8 @@ def groups():
 @app.route('/requests')
 def requests():
     return render_template('requests.html')
-
+@app.route('/discover')
+def discover():
+    return render_template('discover.html')
 if __name__ == '__main__':
     app.run(debug=True)
