@@ -3,7 +3,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE TABLE app_user(
     UserID uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     Name varchar(255) NOT NULL,
-    Email varchar(255) NOT NULL UNIQUE,
+    Email varchar(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE user_cred(
