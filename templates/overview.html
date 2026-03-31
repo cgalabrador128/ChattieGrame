@@ -1,14 +1,252 @@
 {% extends 'base.html' %}
 
 {% block head %}
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='overview.css') }}">
 {% endblock %}
 
 {% block body %}
     {% include 'navigation.html' %}
 
-<p class="general">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vitae est lacus. Donec eget egestas libero, id aliquet urna. Donec dapibus sodales justo sit amet cursus. Fusce varius vehicula neque, quis ultricies neque auctor vel. Curabitur rutrum dui a quam porta pretium. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean lacinia elementum lobortis. Vestibulum mauris erat, volutpat id felis sed, hendrerit mollis purus. Vivamus porttitor, lorem et finibus bibendum, purus turpis posuere diam, at dapibus enim turpis rhoncus arcu. Fusce congue lectus in lacus fringilla, nec varius dui imperdiet. Praesent consequat efficitur ligula et mollis. Cras in vulputate quam.
+    <div class="overview-container">
+        <div class="overview-header">
+            <div class="time-date">
+                <h1 id="time">15:56:09</h1>
+                <h2 id="date">Tuesday, March 31, 2026</h2>
+            </div>
 
-Vivamus in orci nisl. Nam id ante ornare, hendrerit dui in, vehicula justo. Proin sagittis quam id purus tristique aliquam. Donec vel enim luctus ante viverra convallis. In sodales auctor diam. Phasellus massa nunc, consequat eget quam eget, finibus dignissim lorem. Cras in mi et felis imperdiet maximus et at tellus. Ut molestie a lectus et viverra. Pellentesque lorem tellus, laoreet ac mollis nec, vestibulum quis libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras consectetur purus est, sed ultrices mi tempor nec. Donec sit amet iaculis leo, vel congue massa. Donec egestas purus id hendrerit eleifend. Etiam cursus dolor id porta ultricies. Proin turpis libero, ultrices vitae dui eget, semper viverra libero. Aenean ac iaculis nisl
-</p>
+            <div class="notif-button">
+                <button>Notifications</button>
+            </div>
+
+        </div>
+
+        <div class="overview-grid">
+
+            <div class="calendar-card">
+                <div class="card-header"><h3>Calendar</h3></div>
+
+                <div class="calendar-grid">
+                    <div class="day">SUN</div>
+                    <div class="day">MON</div>
+                    <div class="day">TUE</div>
+                    <div class="day">WED</div>
+                    <div class="day">THU</div>
+                    <div class="day">FRI</div>
+                    <div class="day">SAT</div>
+
+                    <div class="calendar-cell">
+                        <span class="date-num">30</span>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                    </div>
+                    <div class="calendar-cell">
+                        <span class="date-num">31</span>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                    </div>
+                    <div class="calendar-cell">
+                        <span class="date-num">01</span>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                    </div>
+                    <div class="calendar-cell">
+                        <span class="date-num">02</span>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                    </div>
+                    <div class="calendar-cell">
+                        <span class="date-num">03</span>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                    </div>
+                    <div class="calendar-cell">
+                        <span class="date-num">04</span>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                    </div>
+                    <div class="calendar-cell">
+                        <span class="date-num">05</span>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                    </div>
+
+
+                    <div class="calendar-cell">
+                        <span class="date-num">06</span>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                    </div>
+                    <div class="calendar-cell">
+                        <span class="date-num">07</span>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                    </div>
+                    <div class="calendar-cell">
+                        <span class="date-num">08</span>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                    </div>
+                    <div class="calendar-cell">
+                        <span class="date-num">09</span>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                    </div>
+                    <div class="calendar-cell">
+                        <span class="date-num">10</span>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                    </div>
+                    <div class="calendar-cell">
+                        <span class="date-num">11</span>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                    </div>
+                    <div class="calendar-cell">
+                        <span class="date-num">12</span>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="schedule-card">
+                <div class="card-header"><h3>Schedule</h3></div>
+                <div class="scrollable-list">
+                    <ul class="schedule-list" id="schedule-list">
+                        <li><span class="course">Course | Section</span><span class="time">7:00 - 8:10</span></li>
+                        <li><span class="course">Course | Section</span><span class="time">8:10 - 9:20</span></li>
+                        <li><span class="course">Course | Section</span><span class="time">9:20 - 10:30</span></li>
+                        <li><span class="course">Course | Section</span><span class="time">10:30 - 11:40</span></li>
+                        <li><span class="course">Course | Section</span><span class="time">11:40 - 12:50</span></li>
+                        <li><span class="course">Course | Section</span><span class="time">12:50 - 2:00</span></li>
+                        <li><span class="course">Course | Section</span><span class="time">2:00 - 3:10</span></li>
+                        <li><span class="course">Course | Section</span><span class="time">3:10 - 4:20</span></li>
+                        <li><span class="course">Course | Section</span><span class="time">3:10 - 4:20</span></li>
+                        <li><span class="course">Course | Section</span><span class="time">4:20 - 5:30</span></li>
+                        <li><span class="course">Course | Section</span><span class="time">5:30 - 6:40</span></li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tasks-card">
+                <div class="card-header"><h3>To-do</h3></div>
+                <div class="scrollable-list">
+                    <ul class="task-list" id="task-list">
+                        <li>
+                            <span class="course">Course</span>
+                            <span class="task-name">Task Name Here</span>
+                            <span class="due-in">Due In</span>
+                            <span class="time-left">Time Left</span>
+                            <select class="status-dropdown">
+                                <option value="not-started" selected>Not Started</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </li>
+                        <li>
+                            <span class="course">Course</span>
+                            <span class="task-name">Task Name Here</span>
+                            <span class="due-in">Due In</span>
+                            <span class="time-left">Time Left</span>
+                            <select class="status-dropdown">
+                                <option value="not-started" selected>Not Started</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </li>
+                        <li>
+                            <span class="course">Course</span>
+                            <span class="task-name">Task Name Here</span>
+                            <span class="due-in">Due In</span>
+                            <span class="time-left">Time Left</span>
+                            <select class="status-dropdown">
+                                <option value="not-started" selected>Not Started</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </li>
+                        <li>
+                            <span class="course">Course</span>
+                            <span class="task-name">Task Name Here</span>
+                            <span class="due-in">Due In</span>
+                            <span class="time-left">Time Left</span>
+                            <select class="status-dropdown">
+                                <option value="not-started" selected>Not Started</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </li>
+                        <li>
+                            <span class="course">Course</span>
+                            <span class="task-name">Task Name Here</span>
+                            <span class="due-in">Due In</span>
+                            <span class="time-left">Time Left</span>
+                            <select class="status-dropdown">
+                                <option value="not-started" selected>Not Started</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </li>
+                        <li>
+                            <span class="course">Course</span>
+                            <span class="task-name">Task Name Here</span>
+                            <span class="due-in">Due In</span>
+                            <span class="time-left">Time Left</span>
+                            <select class="status-dropdown">
+                                <option value="not-started" selected>Not Started</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
 {% endblock %}
