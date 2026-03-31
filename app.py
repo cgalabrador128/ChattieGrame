@@ -1,8 +1,7 @@
-from flask import Flask, flash, render_template, request, redirect, url_for
+from flask import Flask, flash, session, render_template, request, redirect, url_for
 import data as dat
 from datetime import datetime
 import uuid
-import globalvar as gv
 
 app = Flask(__name__)
 app.secret_key = str(uuid.uuid4())
@@ -10,13 +9,13 @@ app.secret_key = str(uuid.uuid4())
 @app.route('/')
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if gv.userIDsession is None:
+    if session.get('user_id') is None:
         if request.method == 'POST':
             email = request.form.get('email')
             password = request.form.get('password')
-            gv.userIDsession = dat.loginUser(email, password)
+            session['user_id'] = dat.loginUser(email, password)
 
-            if email and password and gv.userIDsession is not None:
+            if email and password and session.get('user_id') is not None:
                 flash('Login successful!')
                 return redirect(url_for('overview'))
 
@@ -30,7 +29,7 @@ def login():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    if gv.userIDsession is None:
+    if session.get('user_id') is None:
         if request.method == 'POST':
             name = request.form.get('name')
             email = request.form.get('email')
@@ -76,7 +75,8 @@ def requests():
     return render_template('requests.html')
 @app.route('/discover')
 def discover():
-    return render_template('discover.html')
+    users = dat.getAllUsers()
+    return render_template('discover.html', users=users)
 
 
 if __name__ == '__main__':

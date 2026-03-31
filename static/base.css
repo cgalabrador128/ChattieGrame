@@ -46,7 +46,9 @@
 }
 .container div.content{
     margin-right: 30px;
+    margin-left: 10px;
     grid-area: content;
+    
 }
 .container div.footer{
     grid-area: footer;

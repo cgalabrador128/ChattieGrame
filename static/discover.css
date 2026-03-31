@@ -1,0 +1,101 @@
+.discover-container{
+    display:grid;
+    grid-template-areas:
+    "search search"
+    "discover-content discover-content";
+    grid-template-rows: 1fr 5fr;
+}
+.discover-container div{
+    background-color: white;
+    margin-top: 20px;
+}
+
+/*search area*/
+.discover-container div.search{
+    grid-area: search;
+}
+.discover-container div.search form {
+    width: 100%;
+}
+
+.discover-container div.search form input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 50vw;
+}
+
+.discover-container div.search form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ffbd59;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.discover-container div.search form button:hover {
+    background-color: white;
+    border-radius: 10px;
+        font-family: Poppins-bold;
+}
+
+/*content area*/
+.discover-container div.discover-content{
+    grid-area: discover-content;
+    background-color: #d9d9d9;
+    display: grid;
+    grid-template-areas: "user-card user-card user-card user-card user-card";
+    grid-template-columns: repeat(5, 1fr);
+    height:400px;
+    overflow-y: auto;  
+}
+.discover-container div.discover-content .user-card{
+    background-color: #b4b4b4;
+    width: 150px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    margin: 20px;
+}
+.discover-container div.discover-content .user-card img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+.discover-container div.discover-content .user-card a{
+    font-family: Poppins-bold;
+    text-decoration: none;
+    font-size: 14px;
+    color: black;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.discover-container div.discover-content .user-card a:hover{
+    text-decoration: underline;
+    font-family: Poppins-bold;
+}
+
+.discover-container div.discover-content .user-card button{
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ffbd59;
+    color: black;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    width: 130px;
+}
+
+.discover-container div.discover-content .user-card button:hover {
+    background-color: white;
+    border-radius: 20px;
+    font-family: Poppins-bold;
+}
