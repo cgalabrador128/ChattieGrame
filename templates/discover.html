@@ -15,7 +15,7 @@
     <div class = "discover-content">
         
         {% for user in users %}
-            {% if user.userid != session.get('user_id') %}
+            {% if user.userid != session.get('userid') %}
                 <div class ="user-card">
                 <img src="{{ user.profile_image }}" alt="Profile Picture" class="profile-picture">
                 <a href="/profile/{{ user.userid }}">{{ user.name }}</a>

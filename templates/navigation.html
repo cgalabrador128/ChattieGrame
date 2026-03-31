@@ -5,11 +5,11 @@
 <body>
 <nav>
     <ul>
-    <li><a href="overview"><img src="{{ url_for('static', filename='/resources/1.png') }}"/><br>Overview</a></li>
-    <li><a href="messages"><img src="{{ url_for('static', filename='/resources/4.png') }}"/><br>Messages</a></li>
-    <li><a href="groups"><img src="{{ url_for('static', filename='/resources/3.png') }}"/><br>Groups</a></li>
-    <li><a href="discover"><img src="{{ url_for('static', filename='/resources/5.png') }}"/><br>Discover</a></li>
-    <li><a href="profile"><img src="{{ url_for('static', filename='/resources/2.png') }}"/><br>Profile</a></li>
+    <li><a href="{{ url_for('overview') }}"><img src="{{ url_for('static', filename='/resources/1.png') }}"/><br>Overview</a></li>
+    <li><a href="{{ url_for('messages') }}"><img src="{{ url_for('static', filename='/resources/4.png') }}"/><br>Messages</a></li>
+    <li><a href="{{ url_for('groups') }}"><img src="{{ url_for('static', filename='/resources/3.png') }}"/><br>Groups</a></li>
+    <li><a href="{{ url_for('discover') }}"><img src="{{ url_for('static', filename='/resources/5.png') }}"/><br>Discover</a></li>
+    <li><a href="{{ url_for('profile', userid=session.get('userid')) }}"><img src="{{ url_for('static', filename='/resources/2.png') }}"/><br>Profile</a></li>
     </ul>
 </nav>
 
