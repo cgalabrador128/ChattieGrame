@@ -32,7 +32,6 @@
     justify-content: center;
     height: 65px;
     overflow: hidden;
-    
 }
 
 .message-container div.message-sidebar div.request-item{
@@ -49,8 +48,8 @@
     text-align: center;
     justify-content: center;
     padding:10px;
-    padding-left:30px;
-    padding-right: 30px;
+    padding-left:25px;
+    padding-right: 25px;
     margin:5px;
     font-family: Poppins;
 }
@@ -64,16 +63,16 @@
     background-color: white;
     border-radius: 15px;
     padding: 10px;
-    padding-left:30px;
-    padding-right: 30px;
+    padding-left:25px;
+    padding-right: 25px;
 }
 
 .message-container div.message-sidebar div.request-item #truelaloo{
     background-color: white;
     border-radius: 15px;
     padding: 10px;
-    padding-left:30px;
-    padding-right: 30px;
+    padding-left:25px;
+    padding-right: 25px;
 }
 .message-container div.message-sidebar div.message-sidebar-content{
     grid-area: message-sidebar-content;

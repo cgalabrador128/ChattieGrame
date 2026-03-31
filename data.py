@@ -1,4 +1,5 @@
 import os
+from curl_cffi import const
 from supabase import create_client, Client
 from dotenv import load_dotenv
 from flask import flash, redirect, url_for, Flask
@@ -67,3 +68,17 @@ def loginUser(email, password):
     except Exception as e:
         print("Login failed with error: ", e)
         return None
+
+def getAllUsers():
+    try:
+        response = supabase_admin.table('app_user').select("*").execute()
+        for user in response.data:
+            if user['profile_image'] is None:
+                # Add a default profile image URL
+                user['profile_image'] = "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
+            else:
+                user['profile_image'] = f"{os.environ.get('SUPABASE_URL')}/storage/v1/object/public/profile_images/{user['userid']}.{user['profile_image']}"
+        return response.data
+    except Exception as e:
+        print("Error fetching users: ", e)
+        return []

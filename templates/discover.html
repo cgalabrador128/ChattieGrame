@@ -1,8 +1,30 @@
 {% extends 'base.html' %}
 
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='discover.css') }}">
 {% endblock %}
 
 {% block body %}
-
+<div class="discover-container">
+    <div class = "search">
+        <form action="/discover" method="post">
+            <input type="text" name="query" placeholder="Search for users, or profile ID">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class = "discover-content">
+        
+        {% for user in users %}
+            {% if user.userid != session.get('user_id') %}
+                <div class ="user-card">
+                <img src="{{ user.profile_image }}" alt="Profile Picture" class="profile-picture">
+                <a href="/profile/{{ user.userid }}">{{ user.name }}</a>
+                <button onclick="window.location.href='/chat/{{ user.userid }}'">Chat</button>
+                <button onclick="window.location.href='/friend_request/{{ user.userid }}'">Add Friend</button>
+                </div>
+            {% endif %}  
+        {% endfor %}
+        <!--<p>No results found.</p>-->
+    </div>
+</div>
 {% endblock %}
