@@ -1,0 +1,98 @@
+.profile-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    grid-template-areas: 
+    "profile-header profile-header"
+    "profile-content profile-content"
+    "friends-section friends-section";
+}
+
+.profile-container div{
+    background-color: #d9d9d9;
+}
+
+.profile-container div.profile-header{
+    grid-area: profile-header;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-areas: 
+    "img name"
+    "button name"
+    "button name";
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.profile-container div.profile-header img{
+    grid-area: img;
+    width: 80px;
+    height: 80px;
+    border-radius: 10%;
+    object-fit: cover;
+    border-color: bisque;
+}
+
+.profile-container div.profile-header h2{
+    grid-area: name;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.profile-container div.profile-header button{
+    grid-row: button;
+    padding: 10px 20px;
+    width: 80px;
+    background-color: #ffbd59;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.profile-container div.profile-header button:hover{
+    background-color: white;
+    font-family: Poppins-bold;
+}
+
+.profile-container div.profile-content{
+    grid-area: profile-content;
+    padding: 20px;
+}
+
+.profile-container div.friends-section{
+    grid-area: friends-section;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-areas: 
+    "friend-header friend-header friend-header friend-header"
+    "friend friend friend friend"
+    "friend friend friend friend";
+    gap: 20px;
+    padding: 20px;
+}
+.profile-container div.friends-section .friend-header{
+    grid-area: friend-header;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.profile-container div.friends-section h4{
+    margin-bottom: 10px;
+    width: 50px;
+}
+
+.profile-container div.friends-section .friend{
+    grid-area: friend;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.profile-container div.friends-section .friend img{
+    width: 50px;
+    height: 50px;
+    border-radius: 10%;
+    object-fit: cover;
+}

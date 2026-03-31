@@ -60,10 +60,7 @@ def loginUser(email, password):
 
         if response.user:
             print("Login successful.")
-            user_data_response = supabase.table('app_user').select("userid").eq("userid", response.user.id).execute()
-            #return response.user
-            print(user_data_response.data[0]['userid'])
-            return user_data_response.data[0]['userid']
+            return response.user
         
     except Exception as e:
         print("Login failed with error: ", e)
@@ -73,12 +70,52 @@ def getAllUsers():
     try:
         response = supabase_admin.table('app_user').select("*").execute()
         for user in response.data:
-            if user['profile_image'] is None:
-                # Add a default profile image URL
-                user['profile_image'] = "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
-            else:
-                user['profile_image'] = f"{os.environ.get('SUPABASE_URL')}/storage/v1/object/public/profile_images/{user['userid']}.{user['profile_image']}"
+            response.data[response.data.index(user)] = getUserProfile(user['userid'])
         return response.data
     except Exception as e:
         print("Error fetching users: ", e)
         return []
+
+def getUserFriends(userid):
+    try:
+        print(userid)
+        friends = []
+        response = supabase_admin.table('userfriends').select('*').execute()
+        for i in response.data:
+            if i['userid_1'] == userid or i['userid_2'] == userid: 
+                if i['userid_1'] == userid:
+                    i['userid_2'] = getUserProfile(i['userid_2'])
+                    friends.append((i['userid_2']['name'], i['userid_2']['profile_image']))
+                else:
+                    i['userid_1'] = getUserProfile(i['userid_1'])
+                    friends.append((i['userid_1']['name'], i['userid_1']['profile_image']))
+        print(friends)
+        return friends
+    except Exception as e:
+        print("Error fetching friends: ", e)
+        return []
+
+def getUserProfile(userid):
+    try:
+        response = supabase_admin.table('app_user').select("*").eq("userid", userid).execute()
+        if response.data:
+            user = response.data[0]
+            if user['profile_image'] is None:
+                user['profile_image'] = "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
+            else:
+                user['profile_image'] = f"{os.environ.get('SUPABASE_URL')}/storage/v1/object/public/profile_images/{user['userid']}.{user['profile_image']}"
+            return user
+        else:
+            print("User not found")
+            return None
+    except Exception as e:
+        print("Error fetching user profile: ", e)
+        return None
+
+"""
+response = supabase.auth.sign_in_with_password({
+            "email": "catherinegracelabrador@gmail.com",
+            "password": 'test123456'
+        })
+getUserFriends(response.user.id)
+"""
