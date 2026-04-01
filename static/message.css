@@ -106,3 +106,53 @@
     grid-area: message-content-body;
     overflow-y: scroll;
 }
+
+@media screen and (max-width:1200px) {
+    .message-container div.message-sidebar{
+    display: grid;
+    grid-template-areas: 
+    "message-item message-item"
+    "message-sidebar-content message-sidebar-content";
+    grid-template-columns: 1fr 1fr;
+    
+    }
+    .message-container div.message-sidebar div.request-item{
+        display: none;
+    }
+    .message-container div.message-sidebar div.message-item{
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+    .message-container div.message-sidebar a{
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    justify-content: center;
+    font-family: Poppins;
+    padding: auto;
+    margin:0;
+}
+}
+
+@media screen and (max-width:570px) {
+    .message-container div.message-sidebar{
+    display: grid;
+    grid-template-areas: 
+    "message-item message-item"
+    "message-sidebar-content message-sidebar-content";
+    grid-template-columns: 1fr 1fr;
+    
+    }
+    .message-container div.message-sidebar div.request-item{
+        display: none;
+    }
+    .message-container div.message-sidebar div.message-item{
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+    .message-container div.message-sidebar a{
+        display:none;
+    }
+}

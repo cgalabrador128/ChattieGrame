@@ -17,10 +17,12 @@
         {% for user in users %}
             {% if user.userid != session.get('userid') %}
                 <div class ="user-card">
-                <img src="{{ user.profile_image }}" alt="Profile Picture" class="profile-picture">
-                <a href="/profile/{{ user.userid }}">{{ user.name }}</a>
-                <button onclick="window.location.href='/chat/{{ user.userid }}'">Chat</button>
-                <button onclick="window.location.href='/friend_request/{{ user.userid }}'">Add Friend</button>
+                    <div class="profile-picture"><a href="/profile/{{ user.userid }}"><img src="{{ user.profile_image }}" alt="Profile Picture"></a></div>
+                    <div class="name"><a href="/profile/{{ user.userid }}">{{ user.name }}</a></div>
+                    <div class="button"> 
+                        <button onclick="window.location.href='/chat/{{ user.userid }}'">Chat</button>
+                        <button onclick="window.location.href='/friend_request/{{ user.userid }}'">Add Friend</button>
+                    </div>
                 </div>
             {% endif %}  
         {% endfor %}

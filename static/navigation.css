@@ -43,6 +43,6 @@ li a img{
 @media screen and (max-width:1000px) {
     nav{
         width: 120px;
-        max-width: 9%;
+        max-width: 70px;
     }
 }

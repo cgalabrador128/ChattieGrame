@@ -48,28 +48,56 @@
     background-color: #d9d9d9;
     display: grid;
     grid-template-areas: "user-card user-card user-card user-card user-card";
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     height:400px;
-    overflow-y: auto;  
+    overflow-y: visible; 
+    overflow-x: hidden;
 }
 .discover-container div.discover-content .user-card{
-    background-color: #b4b4b4;
+    display: grid;
+    grid-template-areas: 
+    "profile-picture"
+    "name"
+    "button"
+    "button";
+    grid-template-rows: 3fr 1fr 1fr 1fr;
+    gap:2px;
+    background-color: white;
+    height: 300px;
     width: 150px;
-    height: 200px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
+    border-color: #ffbd59;
+    border-style: groove;
     margin: 20px;
 }
+
+.discover-container div.discover-content .user-card div{
+    background-color: white;
+    border-radius: 10px;
+}
+
 .discover-container div.discover-content .user-card img{
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    margin-bottom: 10px;
+    width: 100px;
+    height: 100px;
+    border-radius: 20%;
+    image-rendering: optimizeSpeed;
+    image-orientation: from-image;
+}
+.discover-container div.discover-content .user-card div.profile-picture{
+    grid-area: profile-picture;
+}
+
+.discover-container div.discover-content .user-card .name{
+    grid-area:name;
+    text-align: center;
+    height: 30px;
 }
 .discover-container div.discover-content .user-card a{
+  
     font-family: Poppins-bold;
     text-decoration: none;
     font-size: 14px;
@@ -82,7 +110,14 @@
     font-family: Poppins-bold;
 }
 
+.discover-container div.discover-content .user-card div.button{
+    grid-area: button;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
 .discover-container div.discover-content .user-card button{
+    font-family: Poppins-bold;
     padding: 10px 20px;
     font-size: 16px;
     background-color: #ffbd59;
@@ -99,3 +134,56 @@
     border-radius: 20px;
     font-family: Poppins-bold;
 }
+
+@media screen and (max-width:1270px){
+    .discover-container div.discover-content{
+    grid-area: discover-content;
+    background-color: #d9d9d9;
+    display: grid;
+    grid-template-areas: "user-card user-card";
+    grid-template-columns: repeat(5, 1fr);
+    height:400px;
+    overflow-y: auto;  
+    overflow-x: hidden;
+}
+}
+
+@media screen and (max-width:1050px){
+    .discover-container div.discover-content{
+    grid-area: discover-content;
+    background-color: #d9d9d9;
+    display: grid;
+    grid-template-areas: "user-card user-card";
+    grid-template-columns: repeat(4, 1fr);
+    height:400px;
+    overflow-y: auto;  
+    overflow-x: hidden;
+}
+}
+
+@media screen and (max-width:850px){
+    .discover-container div.discover-content{
+    grid-area: discover-content;
+    background-color: #d9d9d9;
+    display: grid;
+    grid-template-areas: "user-card user-card";
+    grid-template-columns: repeat(3, 1fr);
+    height:400px;
+    overflow-y: auto;  
+    overflow-x: hidden;
+}
+}
+
+@media screen and (max-width:650px){
+    .discover-container div.discover-content{
+    grid-area: discover-content;
+    background-color: #d9d9d9;
+    display: grid;
+    grid-template-areas: "user-card user-card";
+    grid-template-columns: repeat(2, 1fr);
+    height:400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+}
+
