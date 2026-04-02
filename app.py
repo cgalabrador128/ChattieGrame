@@ -8,6 +8,7 @@ app.secret_key = str(uuid.uuid4())
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_PERMANENT'] = True
 
+
 @app.route('/')
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -29,10 +30,11 @@ def login():
                 error = "Invalid email or password. Please try again."
                 return render_template('login.html', error=error)
         return render_template('login.html')
-        
+
     except Exception as e:
         print("Error during login: ", e)
         return render_template('login.html')
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -86,14 +88,21 @@ def profile(userid):
         print("Error fetching profile: ", e)
         return render_template('profile.html', user=session.get('userid'), friends=[], profile=None)
 
+
 @app.route('/groups')
 def groups():
     return render_template('groups.html')
 
 
+@app.route('/view-group')
+def view_group():
+    return render_template('view-group.html')
+
+
 @app.route('/requests')
 def requests():
     return render_template('requests.html')
+
 
 @app.route('/discover')
 def discover():
