@@ -89,8 +89,10 @@ def profile(userid):
         return render_template('profile.html', user=session.get('userid'), friends=[], profile=None)
 
 
-@app.route('/groups')
+@app.route('/groups', methods=['GET', 'POST'])
 def groups():
+    if request.method == 'POST':
+        return redirect(url_for('groups'))
     return render_template('groups.html')
 
 
