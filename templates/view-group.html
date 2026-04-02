@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='groups.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% include 'navigation.html' %}
+
+    <div class="groups-container">
+
+        <div class="view-group-header">
+            <div class="group-header-title">
+                <button class="back-button" onclick="window.location.href='/groups'">&lt; Back</button>
+                <h2>Group Name Here</h2>
+            </div>
+            <div class="group-header-tabs">
+                <button class="tab-button active" onclick="switchTab('calendar', this)">Calendar</button>
+                <button class="tab-button" onclick="switchTab('tasks', this)">Tasks</button>
+                <button class="tab-button" onclick="switchTab('members', this)">Members</button>
+            </div>
+        </div>
+
+        <div id="calendar-tab" class="tab-pane">
+            <div class="calendar-card">
+
+                <div class="calendar-card-header">
+                    <h3>April 2, 2026</h3>
+                    <div class="header-buttons">
+                        <button class="view-schedule-button">View Schedule</button>
+                        <button class="edit-schedule-button">Edit Schedule</button>
+                    </div>
+                </div>
+
+                <div class="calendar-grid">
+                    <div class="day">SUN</div>
+                    <div class="day">MON</div>
+                    <div class="day">TUE</div>
+                    <div class="day">WED</div>
+                    <div class="day">THU</div>
+                    <div class="day">FRI</div>
+                    <div class="day">SAT</div>
+
+                    <div class="calendar-cell"><span class="date-num">29</span></div>
+                    <div class="calendar-cell"><span class="date-num">30</span></div>
+                    <div class="calendar-cell"><span class="date-num">31</span></div>
+                    <div class="calendar-cell"><span class="date-num">01</span></div>
+                    <div class="calendar-cell">
+                        <span class="date-num">02</span>
+                        <div class="cell-task">
+                            <span class="cell-task-name">Task Name Here</span>
+                            <span class="cell-time-left">Time Left</span>
+                        </div>
+                    </div>
+                    <div class="calendar-cell"><span class="date-num">03</span></div>
+                    <div class="calendar-cell"><span class="date-num">04</span></div>
+
+                    <div class="calendar-cell"><span class="date-num">05</span></div>
+                    <div class="calendar-cell"><span class="date-num">06</span></div>
+                    <div class="calendar-cell"><span class="date-num">07</span></div>
+                    <div class="calendar-cell"><span class="date-num">08</span></div>
+                    <div class="calendar-cell"><span class="date-num">09</span></div>
+                    <div class="calendar-cell"><span class="date-num">10</span></div>
+                    <div class="calendar-cell"><span class="date-num">11</span></div>
+
+                    <div class="calendar-cell"><span class="date-num">12</span></div>
+                    <div class="calendar-cell"><span class="date-num">13</span></div>
+                    <div class="calendar-cell"><span class="date-num">14</span></div>
+                    <div class="calendar-cell"><span class="date-num">15</span></div>
+                    <div class="calendar-cell"><span class="date-num">16</span></div>
+                    <div class="calendar-cell"><span class="date-num">17</span></div>
+                    <div class="calendar-cell"><span class="date-num">18</span></div>
+
+                    <div class="calendar-cell"><span class="date-num">19</span></div>
+                    <div class="calendar-cell"><span class="date-num">20</span></div>
+                    <div class="calendar-cell"><span class="date-num">21</span></div>
+                    <div class="calendar-cell"><span class="date-num">22</span></div>
+                    <div class="calendar-cell"><span class="date-num">23</span></div>
+                    <div class="calendar-cell"><span class="date-num">24</span></div>
+                    <div class="calendar-cell"><span class="date-num">25</span></div>
+
+                    <div class="calendar-cell"><span class="date-num">26</span></div>
+                    <div class="calendar-cell"><span class="date-num">27</span></div>
+                    <div class="calendar-cell"><span class="date-num">28</span></div>
+                    <div class="calendar-cell"><span class="date-num">29</span></div>
+                    <div class="calendar-cell"><span class="date-num">30</span></div>
+                    <div class="calendar-cell"><span class="date-num">01</span></div>
+                    <div class="calendar-cell"><span class="date-num">02</span></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="tasks-tab" class="tab-pane" style="display: none;">
+            <div class="task-card">
+
+                <div class="task-card-header">
+                    <h3>Task List</h3>
+                    <div class="header-task-form">
+                        <div class="type-input"><input type="text" placeholder="New task name..."></div>
+                        <div class="type-input"><input type="date"></div>
+                        <div class="type-input">
+                            <select>
+                                <option value="">Assign to...</option>
+                                <option value="1">Gerome</option>
+                                <option value="2">Catherine</option>
+                            </select>
+                        </div>
+                        <button class="add-task-button">Add Task</button>
+                    </div>
+                    <div class="header-buttons">
+                        <button class="undo-button">Undo</button>
+                        <button class="redo-button">Redo</button>
+                    </div>
+                </div>
+
+                <div class="scrollable-list">
+                    <ul class="task-list">
+                        <li>
+                            <span class="course">Gerome</span>
+                            <span class="task-name">Group Presentation</span>
+                            <span class="due-in">April 12</span>
+                            <span class="time-left">2 Days Left</span>
+                            <select class="status-dropdown">
+                                <option value="not-started" selected>Not Started</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="members-tab" class="tab-pane" style="display: none;">
+            <div class="members-card">
+
+                <div class="members-card-header">
+                    <h3>Members</h3>
+                    <button class="add-member-button">Add Member</button>
+                </div>
+
+                <div class="members-grid">
+                    <div class="member-grid-card">
+                        <div class="member-icon">
+                            <img src="{{ url_for('static', filename='resources/nubcat.jpg') }}" alt="Gerome's Icon">
+                        </div>
+                        <div class="member-info">
+                            <span class="member-name">Gerome Carreon</span>
+                            <span class="member-role">Admin</span>
+                        </div>
+                    </div>
+
+                    <div class="member-grid-card">
+                        <div class="member-icon">
+                            <img src="{{ url_for('static', filename='resources/pink-nubcat.jpg') }}"
+                                 alt="Catherine's Icon">
+                        </div>
+                        <div class="member-info">
+                            <span class="member-name">Catherine Labrador</span>
+                            <span class="member-role">Member</span>
+                        </div>
+                        <button class="remove-member-button">Remove Member</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+    function switchTab(tabName, button) {
+        document.querySelectorAll('.tab-pane').forEach(pane => pane.style.display = 'none');
+
+        document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+
+        document.getElementById(tabName + '-tab').style.display = 'block';
+
+        button.classList.add('active');
+    }
+</script>
+{% endblock %}

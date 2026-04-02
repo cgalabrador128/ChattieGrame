@@ -1,13 +1,82 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='overview.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='groups.css') }}">
 {% endblock %}
 
 {% block body %}
     <div class="groups-container">
-<h1>Groups</h1>
+        <div class="groups-header">
+            <div class="header-title">
+                <h1>Groups</h1>
+            </div>
+            <div class="header-buttons">
+                <button class="join-button" onclick="showPopup('.join-popup')">Join</button>
+                <button class="create-button" onclick="showPopup('.create-popup')">Create</button>
+            </div>
+        </div>
+
+        <div class="groups-grid">
+            <div class="group-card">
+                <div class="card-top">
+                    <div class="group-icon">
+                        <img src="{{ url_for('static', filename='resources/nubcat.jpg') }}" alt="Group Icon">
+                    </div>
+                    <div class="group-info">
+                        <h3>Group Name Here</h3>
+                        <span>2 Members</span>
+                    </div>
+                </div>
+                <div class="card-bot">
+                    <button class="open-button" onclick="window.location.href='/view-group'">Open Group</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup join-popup" style="display: none;">
+            <div class="popup-card">
+                <span class="close-button" onclick="closePopup('.join-popup')">X</span>
+                <h2>Join a Group</h2>
+
+                <form action="/groups" method="POST">
+                    <div class="type-input">
+                        <label>Uncertain Procedure</label>
+                        <input type="text" placeholder="Uncertain Procedure For Now" required>
+                    </div>
+                    <button type="submit" class="join-button">Join Group</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="popup create-popup" style="display: none;">
+            <div class="popup-card">
+                <span class="close-button" onclick="closePopup('.create-popup')">X</span>
+                <h2>Create a New Group</h2>
+
+                <form action="/groups" method="POST">
+                    <div class="type-input">
+                        <label>Group Name</label>
+                        <input type="text" name="group-name" placeholder="Enter a Group Name" required>
+                    </div>
+                    <button type="submit" class="create-button">Create Group</button>
+                </form>
+            </div>
+        </div>
     </div>
 
+    <script>
+        function showPopup(className) {
+            document.querySelector(className).style.display = 'flex';
+        }
 
+        function closePopup(className) {
+            document.querySelector(className).style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            if (event.target.classList.contains('popup')) {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
 {% endblock %}
