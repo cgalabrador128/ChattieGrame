@@ -51,6 +51,25 @@ USING (auth.role() = 'service_role')
 WITH CHECK (auth.role() = 'service_role');
 
 -- ============================================================================
+-- FUNCTIONS
+-- ============================================================================
+
+-- Function to clear expired invitation codes (older than 30 minutes)
+CREATE OR REPLACE FUNCTION clear_expired_inv_codes()
+RETURNS void AS $$
+BEGIN
+  UPDATE public.groupie
+  SET inv_code = NULL
+  WHERE inv_code IS NOT NULL
+  AND created_at <= now() - interval '30 minutes';
+END;
+$$ LANGUAGE plpgsql;
+
+-- Grant execute permission to service_role
+GRANT EXECUTE ON FUNCTION clear_expired_inv_codes() TO service_role;
+GRANT EXECUTE ON FUNCTION clear_expired_inv_codes() TO authenticated;
+
+-- ============================================================================
 -- USER_CRED - Server only access
 -- ============================================================================
 

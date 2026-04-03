@@ -33,17 +33,5 @@
                 {% endfor %}
         </div>
     </div>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type=text/javascript>
-        $(function() {
-          $('#profile_button').on('click', function(e) {
-            e.preventDefault()
-            $.getJSON('/profile_upload',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
-        });
-</script>
+{% include 'scripts.html' %}
 {% endblock %}
