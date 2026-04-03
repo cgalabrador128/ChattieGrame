@@ -2,7 +2,13 @@ import os
 from curl_cffi import const
 from supabase import create_client, Client
 from dotenv import load_dotenv
+import tkinter as tk
+from tkinter import filedialog
 from flask import flash, redirect, url_for, Flask
+
+window =tk.Tk()
+window.wm_attributes('-topmost', 1)
+window.withdraw()
 
 load_dotenv()
 supabase: Client = create_client(
@@ -76,7 +82,6 @@ def getAllUsers():
 
 def getUserFriends(userid):
     try:
-        print(userid)
         friends = []
         response = supabase_admin.table('userfriends').select('*').execute()
         for i in response.data:
@@ -87,7 +92,6 @@ def getUserFriends(userid):
                 else:
                     i['userid_1'] = getUserProfile(i['userid_1'])
                     friends.append((i['userid_1']['name'], i['userid_1']['profile_image']))
-        print(friends)
         return friends
     except Exception as e:
         print("Error fetching friends: ", e)
@@ -107,10 +111,48 @@ def getUserProfile(userid):
         print("Error fetching user profile: ", e)
         return None
 
+def findUserProfile(test):
+    
+    try:
+        response = supabase_admin.table('app_user').select("*").eq("userid", test).execute()
+        if response.data:
+            return response.data
+        else:
+            print("User not found")
+            return None
+    except Exception as e:
+        test ='%' + test + '%'
+        response = supabase_admin.table('app_user').select("*").ilike("name", test).execute()
+        if response.data:
+            return response.data
+        else:
+            print("User not found")
+            return None
+
+def uploadProfilePic(userid):
+    file1 = filedialog.askopenfilename(
+        title="Select File to Upload",
+        filetypes=[("Image files", "*.png *.jpg *.jpeg *.gif")]
+    )
+    try:
+        with open(file1, "rb") as f:
+            supabase.storage.from_("profile_images").upload(
+                file=f,
+                path=userid+'.png',
+                file_options={"content-type":'png', "upsert": "true"}
+            )
+            return True
+    
+    except Exception as e:
+        print("Error occured uploading the file", e)
+        return False
 """
 response = supabase.auth.sign_in_with_password({
             "email": "catherinegracelabrador@gmail.com",
             "password": 'test123456'
         })
-getUserFriends(response.user.id)
+
+print(findUserProfile("dummy"))
+
+uploadProfilePic(response.user.id)
 """

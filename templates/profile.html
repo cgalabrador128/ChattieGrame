@@ -9,7 +9,7 @@
         <div class="profile-header">
             <img src="{{ profile.profile_image }}" alt="Profile Picture" class="profile-picture">
             {% if session.get('userid') == user %}
-                <button onclick="window.location.href='/edit_profile_picture'">Change Profile Picture</button>
+                <button id ="profile_button" value="change_pfp">Change Profile Picture</button>
             {% endif %}
             {% if session.get('userid') != user %}
                 <button onclick="window.location.href='/chat/{{ user }}'">Chat</button>
@@ -33,4 +33,17 @@
                 {% endfor %}
         </div>
     </div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+        $(function() {
+          $('#profile_button').on('click', function(e) {
+            e.preventDefault()
+            $.getJSON('/profile_upload',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
 {% endblock %}

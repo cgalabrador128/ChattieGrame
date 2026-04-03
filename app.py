@@ -73,7 +73,7 @@ def messages():
     return render_template('messages.html')
 
 
-@app.route('/profile/<userid>')
+@app.route('/profile/<userid>', methods =['GET', 'POST'])
 def profile(userid):
     try:
         if session.get('userid') is None:
@@ -86,7 +86,7 @@ def profile(userid):
             return render_template('profile.html', user=userid, friends=friends, profile=profile)
     except Exception as e:
         print("Error fetching profile: ", e)
-        return render_template('profile.html', user=session.get('userid'), friends=[], profile=None)
+    return render_template('profile.html', user=session.get('userid'), friends=[], profile=None)
 
 
 @app.route('/groups', methods=['GET', 'POST'])
@@ -106,11 +106,19 @@ def requests():
     return render_template('requests.html')
 
 
-@app.route('/discover')
+@app.route('/discover', methods=['GET','POST'])
 def discover():
+    if request.method == 'POST':
+        query = request.form.get('query')
+        users = dat.findUserProfile(query)
+        return render_template('discover.html', users=users)
     users = dat.getAllUsers()
     return render_template('discover.html', users=users)
 
+@app.route('/profile_upload')
+def profile_upload():
+    dat.uploadProfilePic(session.get('userid'))
+    return ""
 
 if __name__ == '__main__':
     app.run(debug=True)
