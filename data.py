@@ -4,15 +4,20 @@ from datetime import timezone
 from curl_cffi import const
 from supabase import create_client, Client
 from dotenv import load_dotenv
-import tkinter as tk
-from tkinter import filedialog
-from flask import flash, redirect, url_for, Flask
+from pathlib import Path
+#import tkinter as tk
+
+#from tkinter import filedialog
+from flask import flash, redirect, url_for, Flask, request, jsonify
 import randomlibrary as randlib
 from json import dumps
 
-window =tk.Tk()
-window.wm_attributes('-topmost', 1)
-window.withdraw()
+#window =tk.Tk()
+#window.wm_attributes('-topmost', 1)
+#window.withdraw()
+
+ALLOWED_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
+MAX_SIZE_MB = 5
 
 load_dotenv()
 supabase: Client = create_client(
@@ -134,23 +139,41 @@ def findUserProfile(searchData): # finds userprofile based on userid/name
             return None
 
 def uploadProfilePic(userid): #uploads profile picture 
-    file1 = filedialog.askopenfilename(
-        title="Select File to Upload",
-        filetypes=[("Image files", "*.png *.jpg *.jpeg *.gif")]
+    for ext in [".jpg", ".jpeg", ".png", ".webp", ".gif"]:
+        try:
+            supabase.storage.from_("profile_images").remove([f"{userid}{ext}"])
+        except:
+            pass
+
+    file = request.files.get("file")
+
+    if not file:
+        return jsonify({"error": "No file provided"}), 400
+
+    # Validate MIME type
+    if file.content_type not in ALLOWED_TYPES:
+        return jsonify({"error": "Only image files are allowed"}), 400
+
+    # Read and validate size
+    file_bytes = file.read()
+    if len(file_bytes) > MAX_SIZE_MB * 1024 * 1024:
+        return jsonify({"error": f"File exceeds {MAX_SIZE_MB}MB limit"}), 400
+
+    # Generate unique filename
+    ext = Path(file.filename).suffix.lower()
+    unique_name = f"{userid}{ext}"
+
+    # Upload to Supabase
+    supabase.storage.from_("profile_images").upload(
+        path=unique_name,
+        file=file_bytes,
+        file_options={"content-type": file.content_type, "upsert": "true" }
     )
-    try:
-        with open(file1, "rb") as f:
-            supabase.storage.from_("profile_images").upload(
-                file=f,
-                path=userid+'.png',
-                file_options={"content-type":'png', "upsert": "true"}
-            )
-        supabase.table('app_user').update({'profile_image': "https://lrzfpjdxxhkxfvtfqwjy.supabase.co/storage/v1/object/public/profile_images/"+userid+".png"}).eq("userid", userid).execute()
-        return True
-    
-    except Exception as e:
-        print("Error occured uploading the file", e)
-        return False
+
+    public_url = supabase.storage.from_("profile_images").get_public_url(unique_name)
+    supabase_admin.table("app_user").update({"profile_image":public_url}).eq("userid", userid).execute()
+
+    return jsonify({"url": public_url}), 200
 
 def createGroup(name, userid):
     try:
@@ -201,11 +224,13 @@ def generateGroupCode(groupid):
 
 def getGroupMembers(groupid):
     try:
-        response = supabase_admin.table('usergroups').select('userid').eq('groupid', groupid).execute()
+        response = supabase_admin.table('usergroups').select('*').eq('groupid', groupid).execute()
         if response.data:
             x =[]
             for i in response.data:
-                x.append(i['userid'])
+                r2 = supabase_admin.table('app_user').select("*").eq("userid", i['userid']).single().execute()
+                r2.data['role']= i['role']
+                x.append(r2.data)
             return x
         else:
             print("Group does not exist")
@@ -214,6 +239,12 @@ def getGroupMembers(groupid):
         print("Error: ", e)
         return None
 
+def getGroup(groupid):
+    try:
+        return supabase_admin.table("groupie").select('*').eq('groupid', groupid).single().execute()
+    except Exception as e:
+        print(e)
+        return None
 def getUserGroups(userid):
     try:
         response = supabase.table('usergroups').select('groupid').eq('userid', userid).execute()
@@ -230,6 +261,13 @@ def getUserGroups(userid):
     except Exception as e:
         print("Error occurred: ",e)
         return None
+
+def removeMember(userid):
+    try:
+        supabase_admin.table('usergroups').delete().eq('userid', userid).execute()
+    except Exception as e:
+        print(e)
+
 #print(createGroup("gayLords", "33a84b34-364a-4dbb-bde2-66e3c4d5ebe9"))
 
 #generateGroupCode('f950bf49-6a6e-4b37-a243-e07ed43eac46')

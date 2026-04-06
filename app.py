@@ -97,7 +97,9 @@ def groups():
             if not groupName:
                 return redirect(url_for('groups'))
             id = dat.createGroup(groupName, session.get('userid'))
-            return redirect(url_for('view_group', groupid = str(id)))
+            members = dat.getGroupMembers(id)
+            groupinfo = dat.getGroup(id)
+            return redirect(url_for('view_group', groupid = str(id)), members=members, groupinfo = groupinfo)
         return redirect(url_for('groups'))
     groups = dat.getUserGroups(session.get('userid'))
     return render_template('groups.html', groups=groups)
@@ -106,8 +108,10 @@ def groups():
 @app.route('/view-group/<groupid>')
 def view_group(groupid):
     try:
+        session["currentgroup"]= groupid
         groupMembers = dat.getGroupMembers(groupid)
-        return render_template('view-group.html', members = groupMembers)
+        groupinfo = dat.getGroup(groupid)
+        return render_template('view-group.html', members = groupMembers, groupinfo = groupinfo)
     except Exception as e:
         print("Error loading data ", e)
     return render_template('view-group.html', members=None)
@@ -127,15 +131,18 @@ def discover():
     users = dat.getAllUsers()
     return render_template('discover.html', users=users)
 
-@app.route('/d_Func/<function>')
-def definedFunc(function):
-    if function == "profile_upload":
-        dat.uploadProfilePic(session.get('userid'))
-    elif function == "add_member_button":
-        dat.joinGroupviaInvite()
+@app.route('/d_Func/<func>', methods=['GET','POST'])
+def definedFunc(func):
+    if func == "profile_upload":
+        return dat.uploadProfilePic(session.get('userid'))
+      
+    elif func == "add_member_button":
+        return dat.joinGroupviaInvite()
         #unfinished(1)
-        
     return ""
 
+@app.route('/remove_member/<userid>', methods=['POST'])
+def remove_member(userid):
+    return dat.removeMember(userid)
 if __name__ == '__main__':
     app.run(debug=True)

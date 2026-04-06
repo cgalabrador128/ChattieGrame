@@ -12,7 +12,7 @@
         <div class="view-group-header">
             <div class="group-header-title">
                 <button class="back-button" onclick="window.location.href='/groups'">&lt; Back</button>
-                <h2>Group Name Here</h2>
+                <h2>{{ groupinfo.name }}</h2>
             </div>
             <div class="group-header-tabs">
                 <button class="tab-button active" onclick="switchTab('calendar', this)">Calendar</button>
@@ -24,6 +24,7 @@
         <div id="calendar-tab" class="tab-pane">
             <div class="calendar-card">
 
+                
                 <div class="calendar-card-header">
                     <h3>April 2, 2026</h3>
                     <div class="header-buttons">
@@ -138,30 +139,25 @@
 
                 <div class="members-card-header">
                     <h3>Members</h3>
-                    <button class="add-member-button">Add Member</button>
+                    <button class="add-member-button" onclick ="showFriends()">Add Member</button>
                 </div>
 
                 <div class="members-grid">
-                    <div class="member-grid-card">
-                        <div class="member-icon">
-                            <img src="{{ url_for('static', filename='resources/nubcat.jpg') }}" alt="Gerome's Icon">
-                        </div>
-                        <div class="member-info">
-                            <span class="member-name">Gerome Carreon</span>
-                            <span class="member-role">Admin</span>
-                        </div>
-                    </div>
 
+                    {%for member in members %}
                     <div class="member-grid-card">
                         <div class="member-icon">
-                            <img src="{{ url_for('static', filename='resources/pink-nubcat.jpg') }}"
-                                 alt="Catherine's Icon">
+                            <img src="{{ member.profile_image }}"
+                                 alt="{{ member.name }}'s Icon">
                         </div>
                         <div class="member-info">
-                            <span class="member-name">Catherine Labrador</span>
-                            <span class="member-role">Member</span>
+                            <span class="member-name">{{ member.name }}</span>
+                            <span class="member-role" style="text-transform: capitalize;">{{ member.role }}</span>
                         </div>
-                        <button class="remove-member-button">Remove Member</button>
+                        {% if session.get('userid')!= member.userid %}
+                        <button class="remove-member-button" onclick="windows.location.href='/remove_member/{{ member.userid }}'">Remove Member</button>
+                        {% endif %}
+                    {% endfor %}
                     </div>
                 </div>
 
@@ -180,5 +176,9 @@
 
         button.classList.add('active');
     }
+    function showFriends(){
+
+    }
 </script>
+{% include 'scripts.html' %}
 {% endblock %}
