@@ -22,7 +22,9 @@ CREATE TABLE userFriends(
 
 CREATE TABLE groupie(
     GroupID uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    MemberCount smallint NOT NULL
+    MemberCount smallint NOT NULL,
+    inv_code varchar(255),
+    created_at timestamp DEFAULT now()
 );
 
 CREATE TABLE userGroups(

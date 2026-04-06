@@ -51,6 +51,25 @@ USING (auth.role() = 'service_role')
 WITH CHECK (auth.role() = 'service_role');
 
 -- ============================================================================
+-- FUNCTIONS
+-- ============================================================================
+
+-- Function to clear expired invitation codes (older than 30 minutes)
+CREATE OR REPLACE FUNCTION clear_expired_inv_codes()
+RETURNS void AS $$
+BEGIN
+  UPDATE public.groupie
+  SET inv_code = NULL
+  WHERE inv_code IS NOT NULL
+  AND created_at <= now() - interval '30 minutes';
+END;
+$$ LANGUAGE plpgsql;
+
+-- Grant execute permission to service_role
+GRANT EXECUTE ON FUNCTION clear_expired_inv_codes() TO service_role;
+GRANT EXECUTE ON FUNCTION clear_expired_inv_codes() TO authenticated;
+
+-- ============================================================================
 -- USER_CRED - Server only access
 -- ============================================================================
 
@@ -243,3 +262,69 @@ CREATE POLICY "Server: manage archived tasks"
 ON archiveTasks FOR ALL
 USING (auth.role() = 'service_role')
 WITH CHECK (auth.role() = 'service_role');
+
+-- ============================================================================
+-- STORAGE POLICIES
+-- ============================================================================
+
+-- Enable Row Level Security on storage.objects
+ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
+
+-- Grant permissions to service_role for storage
+GRANT ALL ON storage.objects TO service_role;
+GRANT ALL ON storage.buckets TO service_role;
+
+-- Grant permissions to authenticated users for storage
+GRANT SELECT, INSERT, UPDATE, DELETE ON storage.objects TO authenticated;
+GRANT SELECT ON storage.buckets TO authenticated;
+
+-- ============================================================================
+-- PROFILE_IMAGES BUCKET POLICIES
+-- ============================================================================
+
+-- Users can view all profile images (to display in profiles)
+CREATE POLICY "Users can view profile images"
+ON storage.objects FOR SELECT
+USING (bucket_id = 'profile_images');
+
+-- Users can upload profile images (initial upload to temp path)
+CREATE POLICY "Users can upload profile images"
+ON storage.objects FOR INSERT
+WITH CHECK (
+  bucket_id = 'profile_images' AND
+  auth.role() = 'authenticated'
+);
+
+-- Users can update their own profile images (including moves)
+CREATE POLICY "Users can update profile images"
+ON storage.objects FOR UPDATE
+USING (
+  bucket_id = 'profile_images' AND
+  auth.role() = 'authenticated'
+)
+WITH CHECK (
+  bucket_id = 'profile_images' AND
+  auth.role() = 'authenticated' AND
+  (storage.foldername(name))[1] = auth.uid()::text
+);
+
+-- Users can delete their own profile images
+CREATE POLICY "Users can delete own profile images"
+ON storage.objects FOR DELETE
+USING (
+  bucket_id = 'profile_images' AND
+  auth.role() = 'authenticated' AND
+  (storage.foldername(name))[1] = auth.uid()::text
+);
+
+-- Server: Full access to profile_images bucket
+CREATE POLICY "Server: manage profile images"
+ON storage.objects FOR ALL
+USING (
+  bucket_id = 'profile_images' AND
+  auth.role() = 'service_role'
+)
+WITH CHECK (
+  bucket_id = 'profile_images' AND
+  auth.role() = 'service_role'
+);

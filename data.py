@@ -1,8 +1,23 @@
 import os
+from datetime import datetime as dt
+from datetime import timezone
 from curl_cffi import const
 from supabase import create_client, Client
 from dotenv import load_dotenv
-from flask import flash, redirect, url_for, Flask
+from pathlib import Path
+#import tkinter as tk
+
+#from tkinter import filedialog
+from flask import flash, redirect, url_for, Flask, request, jsonify
+import randomlibrary as randlib
+from json import dumps
+
+#window =tk.Tk()
+#window.wm_attributes('-topmost', 1)
+#window.withdraw()
+
+ALLOWED_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
+MAX_SIZE_MB = 5
 
 load_dotenv()
 supabase: Client = create_client(
@@ -66,7 +81,7 @@ def loginUser(email, password):
         print("Login failed with error: ", e)
         return None
 
-def getAllUsers():
+def getAllUsers(): #returns all users for discover html
     try:
         response = supabase_admin.table('app_user').select("*").execute()
         return response.data
@@ -74,9 +89,8 @@ def getAllUsers():
         print("Error fetching users: ", e)
         return []
 
-def getUserFriends(userid):
+def getUserFriends(userid): #returns all user friends depending on the userid
     try:
-        print(userid)
         friends = []
         response = supabase_admin.table('userfriends').select('*').execute()
         for i in response.data:
@@ -87,14 +101,13 @@ def getUserFriends(userid):
                 else:
                     i['userid_1'] = getUserProfile(i['userid_1'])
                     friends.append((i['userid_1']['name'], i['userid_1']['profile_image']))
-        print(friends)
         return friends
     except Exception as e:
         print("Error fetching friends: ", e)
         return []
 
 
-def getUserProfile(userid):
+def getUserProfile(userid): # gets userprofile depending on the userid only
     try:
         response = supabase_admin.table('app_user').select("*").eq("userid", userid).execute()
         if response.data:
@@ -107,10 +120,154 @@ def getUserProfile(userid):
         print("Error fetching user profile: ", e)
         return None
 
-"""
-response = supabase.auth.sign_in_with_password({
-            "email": "catherinegracelabrador@gmail.com",
-            "password": 'test123456'
-        })
-getUserFriends(response.user.id)
-"""
+def findUserProfile(searchData): # finds userprofile based on userid/name
+    
+    try:
+        response = supabase_admin.table('app_user').select("*").eq("userid", searchData).execute()
+        if response.data:
+            return response.data
+        else:
+            print("User not found")
+            return None
+    except Exception as e:
+        searchData ='%' + searchData + '%'
+        response = supabase_admin.table('app_user').select("*").ilike("name", searchData).execute()
+        if response.data:
+            return response.data
+        else:
+            print("User not found")
+            return None
+
+def uploadProfilePic(userid): #uploads profile picture 
+    for ext in [".jpg", ".jpeg", ".png", ".webp", ".gif"]:
+        try:
+            supabase.storage.from_("profile_images").remove([f"{userid}{ext}"])
+        except:
+            pass
+
+    file = request.files.get("file")
+
+    if not file:
+        return jsonify({"error": "No file provided"}), 400
+
+    # Validate MIME type
+    if file.content_type not in ALLOWED_TYPES:
+        return jsonify({"error": "Only image files are allowed"}), 400
+
+    # Read and validate size
+    file_bytes = file.read()
+    if len(file_bytes) > MAX_SIZE_MB * 1024 * 1024:
+        return jsonify({"error": f"File exceeds {MAX_SIZE_MB}MB limit"}), 400
+
+    # Generate unique filename
+    ext = Path(file.filename).suffix.lower()
+    unique_name = f"{userid}{ext}"
+
+    # Upload to Supabase
+    supabase.storage.from_("profile_images").upload(
+        path=unique_name,
+        file=file_bytes,
+        file_options={"content-type": file.content_type, "upsert": "true" }
+    )
+
+    public_url = supabase.storage.from_("profile_images").get_public_url(unique_name)
+    supabase_admin.table("app_user").update({"profile_image":public_url}).eq("userid", userid).execute()
+
+    return jsonify({"url": public_url}), 200
+
+def createGroup(name, userid):
+    try:
+        response = supabase_admin.table('groupie').insert({"name": name, "membercount":1}).execute()
+        groupid = response.data[0]['groupid']
+
+        supabase_admin.table('usergroups').insert({"userid":userid, "groupid":groupid, "role":"OWNER"}).execute()
+        return groupid
+    except Exception as e:
+        print("Error retrieving data", e)
+        return None
+
+def joinGroupviaInvite(groupid, userid):
+    try:
+        response = supabase_admin.table('groupie').select("membercount").eq("groupid", groupid).single().execute()
+        membercount = response.data['membercount'] + 1
+
+        #update values
+        supabase_admin.table('usergroups').insert({"userid":userid, "groupid":groupid}).execute()
+        supabase_admin.table('groupie').update({"membercount":membercount}).eq('groupid', groupid).execute()
+    except Exception as e:
+        print("Error updating data", e)
+
+def joinGroupviaCode(inv_code, userid):
+    try:
+        response = supabase_admin.table('groupie').select('groupid').eq('inv_code', inv_code).single().execute()
+        if response.data:
+            joinGroupviaInvite(response.data['groupid'], userid)
+        else:
+            print("No groups with that code")
+    except Exception as e:
+        print("Error:", e)
+
+def generateGroupCode(groupid):
+    try:
+        now = dumps(dt.now(timezone.utc), default=randlib.json_serial)
+        code = None
+        while True:
+            code = randlib.generate_code()
+            response = supabase_admin.table('groupie').select("inv_code").eq('inv_code', code).single().execute()
+            if not response.data:
+                break
+        response = supabase_admin.table('groupie').select('*').eq('groupid', groupid).execute()
+        if response.data:
+            supabase_admin.table('groupie').update({'inv_code': code, 'created_at':now}).eq('groupid', groupid).execute()
+    except Exception as e:
+        print("Error:", e)
+
+def getGroupMembers(groupid):
+    try:
+        response = supabase_admin.table('usergroups').select('*').eq('groupid', groupid).execute()
+        if response.data:
+            x =[]
+            for i in response.data:
+                r2 = supabase_admin.table('app_user').select("*").eq("userid", i['userid']).single().execute()
+                r2.data['role']= i['role']
+                x.append(r2.data)
+            return x
+        else:
+            print("Group does not exist")
+            return None
+    except Exception as e:
+        print("Error: ", e)
+        return None
+
+def getGroup(groupid):
+    try:
+        return supabase_admin.table("groupie").select('*').eq('groupid', groupid).single().execute()
+    except Exception as e:
+        print(e)
+        return None
+def getUserGroups(userid):
+    try:
+        response = supabase.table('usergroups').select('groupid').eq('userid', userid).execute()
+        if response.data:
+            groups = []
+            for r in response.data:
+                t = supabase_admin.table("groupie").select('groupid, name, membercount').eq('groupid', r['groupid']).execute()
+                groups.append(t.data[0])
+            print(groups)
+            return groups
+        else:
+            print("User has no groups")
+            return None
+    except Exception as e:
+        print("Error occurred: ",e)
+        return None
+
+def removeMember(userid):
+    try:
+        supabase_admin.table('usergroups').delete().eq('userid', userid).execute()
+    except Exception as e:
+        print(e)
+
+#print(createGroup("gayLords", "33a84b34-364a-4dbb-bde2-66e3c4d5ebe9"))
+
+#generateGroupCode('f950bf49-6a6e-4b37-a243-e07ed43eac46')
