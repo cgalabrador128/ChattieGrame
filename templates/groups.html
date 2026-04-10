@@ -17,26 +17,31 @@
         </div>
 
         <div class="groups-grid">
-        {% if groups %}
-            {% for group in groups %}
-                <div class="group-card">
-                    <div class="card-top">
-                        <div class="group-icon">
-                            <img src="{{ url_for('static', filename='resources/nubcat.jpg') }}" alt="Group Icon">
+            {% if groups %}
+                {% for group in groups %}
+                    <div class="group-card">
+                        <div class="card-top">
+                            <div class="group-icon">
+                                <img src="{{ url_for('static', filename='resources/nubcat.jpg') }}" alt="Group Icon">
+                            </div>
+                            <div class="group-info">
+                                <h3>{{ group.name }}</h3>
+                                <span>Members: {{ group.membercount }}</span>
+                            </div>
                         </div>
-                        <div class="group-info">
-                            <h3>{{ group.name }}</h3>
-                            <span>{{ group.membercount }} Members</span>
+                        <div class="card-bot">
+                            <button class="open-button"
+                                    onclick="window.location.href='{{ url_for('view_group', groupid= group.groupid) }}'">
+                                Open Group
+                            </button>
                         </div>
                     </div>
-                    <div class="card-bot">
-                        <button class="open-button" onclick="window.location.href='{{ url_for('view_group', groupid= group.groupid) }}'">Open Group</button>
-                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-group">
+                    <p>You don't have any groups, join/create some!</p>
                 </div>
-            {% endfor %}
-        {% else %}
-            <p style="text-align: center;">You don't have any groups, join/create some!</p>
-        {% endif %}
+            {% endif %}
         </div>
 
         <div class="popup join-popup" style="display: none;">

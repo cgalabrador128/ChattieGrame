@@ -1,8 +1,7 @@
 @import url('fonts.css');
 
 .groups-container {
-    margin-top: 20px;
-    margin-bottom: 50px;
+    margin: 20px 0 50px 0;
     display: flex;
     flex-direction: column;
     font-family: 'Poppins', sans-serif;
@@ -15,10 +14,11 @@
     margin-top: 20px;
 }
 
-.split-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 25px;
+.groups-grid:has(.no-group) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100px;
 }
 
 .groups-header {
@@ -28,7 +28,7 @@
     padding: 20px;
     border-radius: 20px;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.15);
 }
 
 .header-title h1 {
@@ -37,7 +37,46 @@
     letter-spacing: 1px;
 }
 
-.view-group-header {
+.header-buttons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.group-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.group-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-top {
+    padding: 20px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    background-color: #ffbd59;
+}
+
+.card-bot {
+    padding: 5px 20px 20px 20px;
+    display: flex;
+    justify-content: center;
+    background-color: white;
+}
+
+.calendar-card,
+.task-card,
+.members-card {
     background-color: white;
     border-radius: 20px;
     border: 1px solid rgba(0, 0, 0, 0.05);
@@ -45,54 +84,42 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    margin-bottom: 25px;
 }
 
-.group-header-title {
-    padding: 25px 30px 15px 30px;
-    display: flex;
-    align-items: flex-start;
-    gap: 5px;
-}
-
-.group-header-title h2 {
-    margin: 0;
-    margin-left: 15px;
-    font-size: 26px;
-    color: black;
+.calendar-card-header,
+.members-card-header {
+    padding: 20px 25px;
+    background-color: #ffbd59;
     font-family: 'Poppins-Bold', sans-serif;
-}
-
-.header-buttons {
     display: flex;
-    gap: 20px;
+    justify-content: space-between;
     align-items: center;
 }
 
-.back-button {
-    background: transparent;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 20px;
+.task-card-header {
+    padding: 15px 25px;
+    background-color: #ffbd59;
     font-family: 'Poppins-Bold', sans-serif;
-    color: #545454;
-    cursor: pointer;
-    padding: 10px 20px;
-    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
 }
 
-.back-button:hover {
-    color: #ffbd59;
-}
-
-.back-button:focus {
-    outline: none;
+.calendar-card-header h3,
+.task-card-header h3,
+.members-card-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #111;
 }
 
 .open-button, .join-button, .create-button,
 .add-task-button, .add-button, .view-schedule-button,
 .edit-schedule-button, .undo-button, .redo-button,
-.remove-button, .add-member-button, .remove-member-button {
-    padding: 10px 20px;
+.remove-button, .add-member-button, .remove-member-button,
+.back-button {
+    padding: 10px 22px;
     border-radius: 50px;
     font-family: 'Poppins-Bold', sans-serif;
     font-size: 13px;
@@ -106,7 +133,8 @@
 .open-button:hover, .join-button:hover, .create-button:hover,
 .add-task-button:hover, .add-button:hover, .view-schedule-button:hover,
 .edit-schedule-button:hover, .undo-button:hover, .redo-button:hover,
-.remove-button:hover, .add-member-button:hover, .remove-member-button:hover {
+.remove-button:hover, .add-member-button:hover, .remove-member-button:hover,
+.back-button:hover {
     background-color: #ffbd59;
     color: black;
     transform: scale(1.05);
@@ -115,7 +143,8 @@
 .open-button:active, .join-button:active, .create-button:active,
 .add-task-button:active, .add-button:active, .view-schedule-button:active,
 .edit-schedule-button:active, .undo-button:active, .redo-button:active,
-.remove-button:active, .add-member-button:active, .remove-member-button:active {
+.remove-button:active, .add-member-button:active, .remove-member-button:active,
+.back-button:active {
     background-color: #ffbd59;
     color: black;
     transform: scale(0.95);
@@ -124,8 +153,16 @@
 .open-button:focus, .join-button:focus, .create-button:focus,
 .add-task-button:focus, .add-button:focus, .view-schedule-button:focus,
 .edit-schedule-button:focus, .undo-button:focus, .redo-button:focus,
-.remove-button:focus, .add-member-button:focus, .remove-member-button:focus {
+.remove-button:focus, .add-member-button:focus, .remove-member-button:focus,
+.back-button:focus {
     outline: none;
+}
+
+.back-button {
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #545454;
+    padding: 10px 20px;
 }
 
 .open-button {
@@ -141,6 +178,66 @@
     padding: 8px 18px;
 }
 
+.add-member-button {
+    padding: 10px 20px !important;
+    font-size: 13px;
+    width: auto !important;
+}
+
+.delete-group-button {
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-family: 'Poppins-Bold', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: transparent;
+    color: red;
+    border: 2px solid red;
+}
+
+.delete-group-button:hover {
+    background-color: red;
+    color: white;
+    transform: scale(1.05);
+}
+
+.delete-group-button:active {
+    transform: scale(0.95);
+}
+
+.delete-group-button:focus {
+    outline: none;
+}
+
+.copy-button {
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    background-color: transparent;
+}
+
+.copy-button img {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.copy-button:hover {
+    background-color: white;
+    transform: scale(1.1);
+}
+
+.copy-button:active {
+    background-color: white;
+    transform: scale(0.95);
+}
+
+.copy-button:focus {
+    outline: none;
+}
+
+
 .type-input {
     display: flex;
     flex-direction: column;
@@ -153,7 +250,8 @@
     color: #545454;
 }
 
-.type-input input, .type-input select {
+.type-input input,
+.type-input select {
     font-family: 'Poppins', sans-serif;
     padding: 15px;
     border-radius: 10px;
@@ -163,7 +261,8 @@
     background-color: white;
 }
 
-.type-input input:focus, .type-input select:focus {
+.type-input input:focus,
+.type-input select:focus {
     border-color: #545454;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
@@ -192,9 +291,34 @@
 }
 
 
+.view-group-header {
+    background-color: white;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.group-header-title {
+    padding: 25px 30px 15px 30px;
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.group-header-title h2 {
+    margin: 0 0 0 15px;
+    font-size: 26px;
+    color: black;
+    font-family: 'Poppins-Bold', sans-serif;
+}
+
 .group-header-tabs {
     display: flex;
-    background-color: #fcfcfc;
+    background-color: white;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
     width: 100%;
 }
@@ -234,84 +358,6 @@
 
 #calendar-tab {
     display: block;
-}
-
-
-.group-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(15px);
-    border-radius: 20px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    overflow: hidden;
-}
-
-.group-card:hover {
-    transform: translateY(-5px);
-}
-
-.card-top {
-    padding: 20px;
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    background-color: #ffbd59;
-}
-
-.group-info h3 {
-    margin: 0;
-    font-size: 18px;
-    font-family: 'Poppins-Bold', sans-serif;
-}
-
-.group-info span {
-    font-size: 12px;
-    color: #545454;
-}
-
-.card-bot {
-    padding: 5px 20px 20px 20px;
-    display: flex;
-    justify-content: center;
-    background-color: white;
-}
-
-.calendar-card, .task-card, .members-card {
-    background-color: white;
-    border-radius: 20px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.calendar-card-header, .members-card-header {
-    padding: 20px 25px;
-    background-color: #ffbd59;
-    font-family: 'Poppins-Bold', sans-serif;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.task-card-header {
-    padding: 15px 25px;
-    background-color: #ffbd59;
-    font-family: 'Poppins-Bold', sans-serif;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-}
-
-.calendar-card-header h3, .task-card-header h3, .members-card-header h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #111;
 }
 
 .calendar-grid {
@@ -381,8 +427,10 @@
     min-width: 0;
 }
 
+
 .scrollable-list {
     overflow-y: auto;
+    scrollbar-width: none;
     max-height: 500px;
 }
 
@@ -427,7 +475,8 @@
     min-width: 0;
 }
 
-.task-list .due-in, .task-list .time-left {
+.task-list .due-in,
+.task-list .time-left {
     flex: 1;
     min-width: 0;
     color: #545454;
@@ -444,6 +493,18 @@
     background-color: rgba(0, 0, 0, 0.05);
     outline: none;
     font-size: 12px;
+}
+
+
+.group-info h3 {
+    margin: 0;
+    font-size: 18px;
+    font-family: 'Poppins-Bold', sans-serif;
+}
+
+.group-info span {
+    font-size: 12px;
+    color: #545454;
 }
 
 .members-grid {
@@ -472,7 +533,8 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-.member-icon, .group-icon {
+.member-icon,
+.group-icon {
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -480,7 +542,8 @@
     overflow: hidden;
 }
 
-.member-icon img, .group-icon img {
+.member-icon img,
+.group-icon img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -518,6 +581,51 @@
     font-size: 13px;
     color: #545454;
     font-family: 'Poppins', sans-serif;
+}
+
+.members-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 45px;
+}
+
+.group-code {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.group-code-box {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    min-width: 100px;
+    border-radius: 8px;
+    padding: 6px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.group-code-label {
+    font-family: 'Poppins-Bold', sans-serif;
+    color: #545454;
+    font-size: 14px;
+}
+
+.group-code-link {
+    font-family: 'Poppins', sans-serif;
+    color: black;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.members-card-footer {
+    padding: 20px 25px;
+    background-color: #ffbd59;
+    font-family: 'Poppins-Bold', sans-serif;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .popup {
@@ -559,6 +667,18 @@
     gap: 20px;
 }
 
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.popup-header h2 {
+    margin: 0;
+    font-family: 'Poppins-Bold', sans-serif;
+}
+
 .close-button {
     position: absolute;
     top: 15px;
@@ -577,6 +697,55 @@
     outline: none;
 }
 
+.popup-header .close-button {
+    position: static;
+    font-size: 18px;
+}
+
+.friend-card {
+    background-color: white;
+    padding: 12px 20px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.friend-card:hover {
+    transform: scale(0.99);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.15);
+}
+
+.friend-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.friend-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.friend-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.friend-name {
+    font-family: 'Poppins-Bold', sans-serif;
+    font-size: 14px;
+    color: black;
+}
+
 @keyframes popupFadeIn {
     from {
         opacity: 0;
@@ -587,3 +756,4 @@
         transform: scale(1);
     }
 }
+
