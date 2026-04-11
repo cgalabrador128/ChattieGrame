@@ -1,40 +1,147 @@
 {% extends "base.html" %}
 
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
 {% endblock %}
 
 {% block body %}
     <div class="profile-container">
         <div class="profile-header">
-            <img src="{{ profile.profile_image }}" alt="Profile Picture" class="profile-picture">
-            {% if session.get('userid') == user %}
-                <!--<button id ="profile_button" value="change_pfp">Change Profile Picture</button>-->
-                <input type="file" id="fileInput" accept="image/*" />
-                <button onclick="uploadImage()">Change Profile Picture</button>
-                <p id="status"></p>
-            {% endif %}
-            {% if session.get('userid') != user %}
-                <button onclick="window.location.href='/chat/{{ user }}'">Chat</button>
-                <button onclick="window.location.href='/friend_request/{{ user }}'">Add Friend</button>
-            {% endif %}
-            <h1>{{ profile.name }}</h1>
-        </div>
-        <div class="profile-content">
-            <p><strong>Email:</strong> {{ profile.email }}</p>
-            <!-- Add more profile details as needed -->
-        </div>
-        <div class="friends-section">
-            <div class ="friends-header">
-                <h2>Friends</h2>
-            </div>  
-                {% for friend in friends %}
-                <div class="friend">
-                    <img src="{{ friend[1] }}" alt="{{ friend[0] }} profile picture">
-                    <h4>{{ friend[0] }}</h4>
+            <div class="profile-info">
+                <div class="profile-pic">
+                    <img src="{{ profile.profile_image }}" alt="Profile Picture" class="profile-picture">
                 </div>
-                {% endfor %}
+                <div class="profile-text">
+                    <h1>{{ profile.name }}</h1>
+                    <p class="profile-email">{{ profile.email }}</p>
+                </div>
+            </div>
+
+            <div class="header-buttons-container">
+                {% if session.get('userid') == user %}
+                    <div class="header-buttons">
+                        <div class="profile-buttons">
+                            <label for="fileInput">Choose Image</label>
+                            <input type="file" id="fileInput" accept="image/*">
+                            <button onclick="uploadImage()">Update Profile</button>
+                        </div>
+                        <p id="status" class="status"></p>
+                    </div>
+                {% else %}
+                    <div class="profile-buttons">
+                        <div class="friend-profile-buttons">
+                            <button onclick="window.location.href='/chat/{{ user }}'">Chat</button>
+                            <button onclick="window.location.href='/friend_request/{{ user }}'">Add Friend</button>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="profile-grid">
+            <div class="about-card">
+                <div class="card-top">
+                    <h2>About Me</h2>
+                    <button onclick="showPopup('.edit-profile-popup')">Edit Profile</button>
+                </div>
+                <div class="card-content">
+                    <div class="info-group">
+                        <span class="info-label">Bio</span>
+                        <p class="info-text">No bio added yet.</p>
+                    </div>
+                    <div class="info-group">
+                        <span class="info-label">Birthday</span>
+                        <p class="info-text">May 22, 2006</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="friends-card">
+                <div class="card-top">
+                    <h2>Friends</h2>
+                    <button class="view-all-button" onclick="showPopup('.friends-popup')">View All</button>
+                </div>
+
+                <div class="friends-list">
+                    {% if friends %}
+                        {% for friend in friends %}
+                            <div class="friend">
+                                <div class="friend-icon">
+                                    <img src="{{ friend[1] }}" alt="{{ friend[0] }} profile picture" onclick="window.location.href='/profile/{{ friend[2] }}'">
+                                </div>
+                                <span class="friend-name">{{ friend[0] }}</span>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="no-friends">No friends yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="popup edit-profile-popup" style="display: none;">
+            <div class="popup-card">
+                <span class="close-button" onclick="closePopup('.edit-profile-popup')">X</span>
+                <h2>Edit Profile</h2>
+
+                <form>
+                    <div class="type-input">
+                        <label>Bio</label>
+                        <textarea placeholder="Share something about yourself..."></textarea>
+                    </div>
+
+                    <div class="type-input">
+                        <label>Birthday</label>
+                        <input type="date" value="2006-05-22">
+                    </div>
+
+                    <div class="popup-footer">
+                        <button type="button" class="save-changes-button" onclick="closePopup('.edit-profile-popup')">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="popup friends-popup" style="display: none;">
+            <div class="popup-card">
+                <span class="close-button" onclick="closePopup('.friends-popup')">X</span>
+                <h2>All Friends</h2>
+
+                <div class="popup-friends-list" style="margin-top: 15px;">
+                    {% if friends %}
+                        {% for friend in friends %}
+                            <div class="popup-friend-card">
+                                <div class="popup-friend-info">
+                                    <div class="popup-friend-icon">
+                                        <img src="{{ friend[1] }}" alt="Icon">
+                                    </div>
+                                    <span class="popup-friend-name">{{ friend[0] }}</span>
+                                </div>
+                                <button class="popup-view-button" onclick="window.location.href='/profile/{{ friend[2] }}'">View</button>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="no-friends">No friends found.</p>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
-{% include 'scripts.html' %}
+
+    <script>
+        function showPopup(className) {
+            document.querySelector(className).style.display = 'flex';
+        }
+
+        function closePopup(className) {
+            document.querySelector(className).style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            if (event.target.classList.contains('popup')) {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
+    {% include 'scripts.html' %}
 {% endblock %}
