@@ -1,98 +1,445 @@
+@import url('fonts.css');
+
 .profile-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-    grid-template-areas: 
-    "profile-header profile-header"
-    "profile-content profile-content"
-    "friends-section friends-section";
+    margin: 20px 0 50px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    font-family: 'Poppins', sans-serif;
 }
 
-.profile-container div{
-    background-color: #d9d9d9;
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 25px;
 }
 
-.profile-container div.profile-header{
-    grid-area: profile-header;
-    display: grid;
-    grid-template-columns: auto auto auto;
-    grid-template-areas: 
-    "img name"
-    "button name"
-    "button name";
+.profile-header {
+    background-color: white;
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 20px;
-    padding: 20px;
-    margin-top: 20px;
 }
 
-.profile-container div.profile-header img{
-    grid-area: img;
+.profile-info {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 25px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.profile-picture {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.profile-text h1 {
+    margin: 0;
+    font-family: 'Poppins-Bold', sans-serif;
+    font-size: 34px;
+    letter-spacing: 1px;
+    color: black;
+}
+
+.profile-email {
+    margin: 5px 0 0 0;
+    color: #545454;
+    font-size: 15px;
+}
+
+.status {
+    margin: 0;
+    font-size: 11px;
+    color: #545454;
+    min-height: 16px;
+}
+
+.header-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.about-card,
+.friends-card {
+    background-color: white;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.card-top {
+    padding: 15px 25px;
+    background-color: #ffbd59;
+    font-family: 'Poppins-Bold', sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-top h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #111;
+}
+
+.card-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.info-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.info-label {
+    font-size: 13px;
+    color: #545454;
+    font-family: 'Poppins-Bold', sans-serif;
+}
+
+.info-text {
+    margin: 0;
+    color: black;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.friends-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    align-content: flex-start;
+}
+
+.friends-list:has(.no-friends),
+.popup-friends-list:has(.no-friends) {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    min-height: 150px;
+}
+
+.friend {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    width: 100px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.friend:hover {
+    transform: translateY(-5px);
+}
+
+.friend-icon {
     width: 80px;
     height: 80px;
-    border-radius: 10%;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.friend-icon img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border-color: bisque;
 }
 
-.profile-container div.profile-header h2{
-    grid-area: name;
-    font-size: 1.5em;
-    font-weight: bold;
+.friend-name {
+    font-family: 'Poppins-Bold', sans-serif;
+    font-size: 12px;
+    color: black;
 }
 
-.profile-container div.profile-header button{
-    grid-row: button;
+.no-friends {
+    color: #545454;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.profile-buttons,
+.friend-profile-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.profile-buttons input[type="file"] {
+    display: none;
+}
+
+.profile-buttons button,
+.profile-buttons label,
+.friend-profile-buttons button,
+.card-top button,
+.view-button,
+.popup-view-button,
+.save-changes-button {
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-family: 'Poppins-Bold', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    background-color: #545454;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.profile-buttons label,
+.friend-profile-buttons button:first-child,
+.about-card .card-top button {
+    background-color: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #545454;
     padding: 10px 20px;
-    width: 80px;
+}
+
+.profile-buttons button:hover,
+.profile-buttons label:hover,
+.friend-profile-buttons button:hover,
+.card-top button:hover,
+.view-button:hover,
+.popup-view-button:hover,
+.save-changes-button:hover {
     background-color: #ffbd59;
     color: black;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    transform: scale(1.05);
 }
 
-.profile-container div.profile-header button:hover{
-    background-color: white;
-    font-family: Poppins-bold;
+.profile-buttons button:active,
+.profile-buttons label:active,
+.friend-profile-buttons button:active,
+.card-top button:active,
+.view-button:active,
+.popup-view-button:active,
+.save-changes-button:active {
+    background-color: #ffbd59;
+    color: black;
+    transform: scale(0.95);
 }
 
-.profile-container div.profile-content{
-    grid-area: profile-content;
-    padding: 20px;
+.profile-buttons button:focus,
+.profile-buttons label:focus,
+.friend-profile-buttons button:focus,
+.card-top button:focus,
+.view-button:focus,
+.popup-view-button:focus,
+.save-changes-button:focus {
+    outline: none;
 }
 
-.profile-container div.friends-section{
-    grid-area: friends-section;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    grid-template-areas: 
-    "friend-header friend-header friend-header friend-header"
-    "friend friend friend friend"
-    "friend friend friend friend";
-    gap: 20px;
-    padding: 20px;
-}
-.profile-container div.friends-section .friend-header{
-    grid-area: friend-header;
-    font-size: 1.5em;
-    font-weight: bold;
-}
-.profile-container div.friends-section h4{
-    margin-bottom: 10px;
-    width: 50px;
-}
-
-.profile-container div.friends-section .friend{
-    grid-area: friend;
+.popup {
+    position: fixed;
+    top: 60px;
+    left: 100px;
+    right: 0;
+    bottom: 0;
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    z-index: 5000;
 }
 
-.profile-container div.friends-section .friend img{
-    width: 50px;
-    height: 50px;
-    border-radius: 10%;
+.popup-card {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    background-color: white;
+    animation: popupFadeIn 0.3s ease;
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.popup-header h2,
+.popup-card h2 {
+    margin: 0;
+    font-family: 'Poppins-Bold', sans-serif;
+    display: inline-block;
+    align-self: flex-start;
+}
+
+.popup-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.popup-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 10px;
+}
+
+.popup-friends-list {
+    max-height: 250px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    padding-right: 5px;
+}
+
+.popup-friend-card {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 20px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+.popup-friend-card:hover {
+    transform: scale(0.98);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.05);
+}
+
+.popup-friend-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.popup-friend-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.popup-friend-icon img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+}
+
+.popup-friend-name {
+    font-family: 'Poppins-Bold', sans-serif;
+    font-size: 14px;
+    color: black;
+}
+
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: #545454;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Poppins-Bold', sans-serif;
+    font-size: 18px;
+}
+
+.popup-header .close-button {
+    position: static;
+}
+
+.close-button:hover {
+    color: #ffbd59;
+}
+
+.close-button:focus {
+    outline: none;
+}
+
+.type-input {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.type-input label {
+    font-family: 'Poppins-Bold', sans-serif;
+    margin-bottom: 5px;
+    color: #545454;
+    font-size: 14px;
+}
+
+.type-input input,
+.type-input textarea,
+.type-input select {
+    font-family: 'Poppins', sans-serif;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    outline: none;
+    background-color: white;
+}
+
+.type-input input:focus,
+.type-input textarea:focus,
+.type-input select:focus {
+    border-color: #545454;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.type-input input:hover,
+.type-input textarea:hover,
+.type-input select:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes popupFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
