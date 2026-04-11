@@ -25,16 +25,6 @@ def emptychatHistory():
     temp = {"message":[]}
     return json.dumps(temp, indent = 2)
 
-def appendchat(chathistory, text, userid):
-    x = json.loads(chathistory)
-    a = {
-        "userid": userid,
-        "datetime":nowtime(),
-        "text":text,
-        "readstatus":False
-    }
-    x['message'].appends(a)
-    return x
 
 def convertTimezone(obj):
     return datetime.fromisoformat(loads(obj))
