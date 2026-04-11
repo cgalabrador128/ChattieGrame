@@ -7,28 +7,34 @@
 {% block body %}
 <div class="message-container">
     <div class="message-sidebar">
-        <div class="message-item"><h3><a href = "messages" id="truelaloo">Messages</a></h3></div>
-        <div class="request-item"><h3><a href = "requests">Requests</a></h3></div>
+        <div class="message-item"><h3><a href = "{{ url_for('messages', id='#') }}" id="truelaloo">Messages</a></h3></div>
+        <div class="request-item"><h3><a href = "{{ url_for('requests', id='#') }}">Requests</a></h3></div>
         <div class="message-sidebar-content">
             <!--MESSAGE CONTENT-->
             <div class ="message-preview">
+                
                 <img src = "{{ url_for('static', filename='resources/nubcat.jpg') }}">
                 <div class='h2'>Name Name</div>
                 <div class = "body">Message message message message mess</div>
                 <div class="time">3m ago</div>
+
             </div>
         </div>
     </div>
     <div class="message-content">
        <div class="message-content-header">
+
         <img src ="{{ url_for('static', filename='resources/nubcat.jpg') }}">
         <h2>Name Name</h2>
         <p>Active Now</p>
+
        </div>
         <div class="message-content-body">
             <!--MESSAGE CONTENT-->
             <div class="mc-body">
                 <!--For loop here-->
+                
+
                 <div class="sender">
                     <img src ="{{ url_for('static', filename='resources/nubcat.jpg') }}">
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
@@ -42,6 +48,7 @@
                     <img src ="{{ url_for('static', filename='resources/nubcat.jpg') }}">
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </div>
+
             </div>
             <div class="mc-interact">
                 <form action="/messages" method="post">

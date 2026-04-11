@@ -2,11 +2,13 @@ from flask import Flask, flash, session, render_template, request, redirect, url
 import data as dat
 from datetime import datetime
 import uuid
+import randomlibrary as rl
 
 app = Flask(__name__)
 app.secret_key = str(uuid.uuid4())
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_PERMANENT'] = True
+
 
 
 @app.route('/')
@@ -68,9 +70,22 @@ def overview():
     return render_template('overview.html')
 
 
-@app.route('/messages')
-def messages():
-    return render_template('messages.html')
+@app.route('/messages/<id>')
+def messages(id):
+    if id == "#":
+        id = "#"
+    else:
+        try:
+            user = dat.getUserProfile(id)
+            if user: 
+                response = dat.generateinitialMessage(session.get("userid"), id)
+                id = response["chatid"]
+                chathistory = response["chathistory"]
+                session["chatdata"] = response
+        except Exception as e:
+            data = dat.getMessage(session.get('userid'), id)
+            id = data["chatid"]
+    return render_template('messages.html', id=id)
 
 
 @app.route('/profile/<userid>', methods =['GET', 'POST'])
@@ -141,8 +156,13 @@ def definedFunc(func):
         #unfinished(1)
     return ""
 
+@app.route('/send_message/<text>', methods=['POST'])
+def send_message(text):
+    return rl.appendchat(session["chatdata"]['chathistory'],text, session.get('userid'))
+
 @app.route('/remove_member/<userid>', methods=['POST'])
 def remove_member(userid):
     return dat.removeMember(userid)
+
 if __name__ == '__main__':
     app.run(debug=True)

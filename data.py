@@ -106,7 +106,6 @@ def getUserFriends(userid): #returns all user friends depending on the userid
         print("Error fetching friends: ", e)
         return []
 
-
 def getUserProfile(userid): # gets userprofile depending on the userid only
     try:
         response = supabase_admin.table('app_user').select("*").eq("userid", userid).execute()
@@ -245,6 +244,7 @@ def getGroup(groupid):
     except Exception as e:
         print(e)
         return None
+
 def getUserGroups(userid):
     try:
         response = supabase.table('usergroups').select('groupid').eq('userid', userid).execute()
@@ -268,6 +268,50 @@ def removeMember(userid):
     except Exception as e:
         print(e)
 
-#print(createGroup("gayLords", "33a84b34-364a-4dbb-bde2-66e3c4d5ebe9"))
+def generatechatBody(id1, id2):
+    try:
+        response = supabase.table('conversation_details').insert({
+            "created_at":randlib.nowtime()
+        }).execute()
+        supabase.table('conversation_participants').insert({
+            "chatid": response.data[0]["chatid"],
+            'userid': id1
+        }).execute()
+        supabase.table('conversation_participants').insert({
+            "chatid": response.data[0]["chatid"],
+            'userid': id2
+        }).execute()
+        return response.data[0]
+    except Exception as e:
+        print("error", e)
+    
+def getAllChat(userid):
+    try:
+        responses = supabase.table('conversation_participants').select('*').eq('userid', userid).execute()
+        chatsum = []
+        for r in responses.data:
+            id = r['chatid']
+            respo = supabase.table('chat').select("*").eq('chatid',id).order("created_at",desc=True).limit(1).execute()
+            chatsum.append((id,respo))
+        return chatsum
+    except Exception as e:
+        print("error", e)
 
-#generateGroupCode('f950bf49-6a6e-4b37-a243-e07ed43eac46')
+def getMessages(chatid):
+    try:
+        response = supabase.table('chat').select("*").eq('chatid', chatid).order("created_at",desc=True).limit(100).execute()
+        return response.data
+    except Exception as e:
+        print("error", e)
+
+def sendMessage(chatid, senderid, chatdata):
+    try:
+        response = supabase.table('chat').insert({
+            "chatid":chatid,
+            "userid_sender":senderid,
+            "chatcontent":chatdata,
+            "created_at":randlib.nowtime(),
+            "readstatus":False
+        })
+    except Exception as e:
+        print("error", e)

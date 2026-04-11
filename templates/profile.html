@@ -15,7 +15,7 @@
                 <p id="status"></p>
             {% endif %}
             {% if session.get('userid') != user %}
-                <button onclick="window.location.href='/chat/{{ user }}'">Chat</button>
+                <button onclick="window.location.href='/messages/{{ user }}'">Chat</button>
                 <button onclick="window.location.href='/friend_request/{{ user }}'">Add Friend</button>
             {% endif %}
             <h1>{{ profile.name }}</h1>

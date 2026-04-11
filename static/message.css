@@ -212,7 +212,7 @@
 .message-container div.message-content div.message-content-body .mc-body{
     grid-area:mc-body;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     overflow-x: hidden;
 }
 
@@ -267,7 +267,7 @@
 .message-container div.message-content div.message-content-body .mc-interact{
     grid-area:mc-interact;
     position:absolute;
-    width: 65%;
+    min-width: 60%;
     bottom:0;
     overflow: hidden;
 }

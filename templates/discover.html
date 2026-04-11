@@ -20,7 +20,7 @@
                     <div class="profile-picture"><a href="/profile/{{ user.userid }}"><img src="{{ user.profile_image }}" alt="Profile Picture"></a></div>
                     <div class="name"><a href="/profile/{{ user.userid }}">{{ user.name }}</a></div>
                     <div class="button"> 
-                        <button onclick="window.location.href='/chat/{{ user.userid }}'">Chat</button>
+                        <button onclick="window.location.href='/messages/{{ user.userid }}'">Chat</button>
                         <button onclick="window.location.href='/friend_request/{{ user.userid }}'">Add Friend</button>
                     </div>
                 </div>
