@@ -94,13 +94,13 @@ def getUserFriends(userid): #returns all user friends depending on the userid
         friends = []
         response = supabase_admin.table('userfriends').select('*').execute()
         for i in response.data:
-            if i['userid_1'] == userid or i['userid_2'] == userid: 
+            if i['userid_1'] == userid or i['userid_2'] == userid:
                 if i['userid_1'] == userid:
                     i['userid_2'] = getUserProfile(i['userid_2'])
-                    friends.append((i['userid_2']['name'], i['userid_2']['profile_image']))
+                    friends.append((i['userid_2']['name'], i['userid_2']['profile_image'], i['userid_2']['userid']))
                 else:
                     i['userid_1'] = getUserProfile(i['userid_1'])
-                    friends.append((i['userid_1']['name'], i['userid_1']['profile_image']))
+                    friends.append((i['userid_1']['name'], i['userid_1']['profile_image'], i['userid_1']['userid']))
         return friends
     except Exception as e:
         print("Error fetching friends: ", e)

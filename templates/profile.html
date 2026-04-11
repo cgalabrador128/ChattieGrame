@@ -41,8 +41,10 @@
         <div class="profile-grid">
             <div class="about-card">
                 <div class="card-top">
-                    <h2>About Me</h2>
+                    <h2>About</h2>
+                    {% if session.get('userid') == user %}
                     <button onclick="showPopup('.edit-profile-popup')">Edit Profile</button>
+                    {%  endif %}
                 </div>
                 <div class="card-content">
                     <div class="info-group">
@@ -65,9 +67,9 @@
                 <div class="friends-list">
                     {% if friends %}
                         {% for friend in friends %}
-                            <div class="friend">
+                            <div class="friend" onclick="window.location.href='/profile/{{ friend[2] }}'" style="cursor: pointer;">
                                 <div class="friend-icon">
-                                    <img src="{{ friend[1] }}" alt="{{ friend[0] }} profile picture" onclick="window.location.href='/profile/{{ friend[2] }}'">
+                                    <img src="{{ friend[1] }}" alt="{{ friend[0] }} profile picture">
                                 </div>
                                 <span class="friend-name">{{ friend[0] }}</span>
                             </div>
