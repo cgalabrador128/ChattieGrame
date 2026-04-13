@@ -5,16 +5,9 @@ from curl_cffi import const
 from supabase import create_client, Client
 from dotenv import load_dotenv
 from pathlib import Path
-#import tkinter as tk
-
-#from tkinter import filedialog
 from flask import flash, redirect, url_for, Flask, request, jsonify
 import randomlibrary as randlib
 from json import dumps
-
-#window =tk.Tk()
-#window.wm_attributes('-topmost', 1)
-#window.withdraw()
 
 ALLOWED_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
 MAX_SIZE_MB = 5
@@ -208,7 +201,6 @@ def joinGroupviaCode(inv_code, userid):
 
 def generateGroupCode(groupid):
     try:
-        now = dumps(dt.now(timezone.utc), default=randlib.json_serial)
         code = None
         while True:
             code = randlib.generate_code()
@@ -217,7 +209,7 @@ def generateGroupCode(groupid):
                 break
         response = supabase_admin.table('groupie').select('*').eq('groupid', groupid).execute()
         if response.data:
-            supabase_admin.table('groupie').update({'inv_code': code, 'created_at':now}).eq('groupid', groupid).execute()
+            supabase_admin.table('groupie').update({'inv_code': code, 'created_at':randlib.nowtime()}).eq('groupid', groupid).execute()
     except Exception as e:
         print("Error:", e)
 
@@ -268,16 +260,16 @@ def removeMember(userid):
     except Exception as e:
         print(e)
 
-def generatechatBody(id1, id2):
+def generatechatBody(id1, id2): #create a message-prompt poop
     try:
-        response = supabase.table('conversation_details').insert({
+        response = supabase_admin.table('conversation_details').insert({
             "created_at":randlib.nowtime()
         }).execute()
-        supabase.table('conversation_participants').insert({
+        supabase_admin.table('conversation_participants').insert({
             "chatid": response.data[0]["chatid"],
             'userid': id1
         }).execute()
-        supabase.table('conversation_participants').insert({
+        supabase_admin.table('conversation_participants').insert({
             "chatid": response.data[0]["chatid"],
             'userid': id2
         }).execute()
@@ -285,26 +277,58 @@ def generatechatBody(id1, id2):
     except Exception as e:
         print("error", e)
     
-def getAllChat(userid):
+def getRecentChat(chatid):
+    try:
+        response = supabase_admin.table('chat').select('*').eq('chatid', id).order("created_at", desc=True).limit(1).execute()
+        if response: 
+            return response.data
+        return None
+    except Exception as e:
+        print('err', e)
+        return None
+    
+def getAllChat(userid): #preview sidebar messages
     try:
         responses = supabase.table('conversation_participants').select('*').eq('userid', userid).execute()
         chatsum = []
         for r in responses.data:
             id = r['chatid']
-            respo = supabase.table('chat').select("*").eq('chatid',id).order("created_at",desc=True).limit(1).execute()
-            chatsum.append((id,respo))
+            valid = supabase_admin.table('chat').select('*').match({'userid_sender':userid,'chatid':id}).execute()
+            if valid.data:
+                respo = supabase_admin.table('chat').select("*").eq('chatid',id).order("created_at",desc=True).limit(1).execute()
+                chatmateid = supabase_admin.table('conversation_participants').select('userid').neq('userid', userid).eq('chatid',id).single().execute()
+                name = supabase_admin.table('app_user').select('name, profile_image').eq('userid', chatmateid.data['userid']).single().execute()
+                mahtuple = (id, name.data, respo.data)
+                chatsum.append(mahtuple)
         return chatsum
     except Exception as e:
         print("error", e)
 
-def getMessages(chatid):
+def getAllRequests(userid):
     try:
-        response = supabase.table('chat').select("*").eq('chatid', chatid).order("created_at",desc=True).limit(100).execute()
+        responses = supabase.table('conversation_participants').select('*').eq('userid', userid).execute()
+        chatsum = []
+        for r in responses.data:
+            id = r['chatid']
+            valid = supabase_admin.table('chat').select('*').match({'userid_sender':userid,'chatid':id}).execute()
+            if valid.data:
+                respo = supabase_admin.table('chat').select("*").eq('chatid',id).order("created_at",desc=True).limit(1).execute()
+                chatmateid = supabase_admin.table('conversation_participants').select('userid').neq('userid', userid).eq('chatid',id).single().execute()
+                name = supabase_admin.table('app_user').select('name, profile_image').eq('userid', chatmateid.data['userid']).single().execute()
+                mahtuple = (id, name.data, respo.data)
+                chatsum.append(mahtuple)
+        return chatsum
+    except Exception as e:
+        print("error", e)
+
+def getMessages(chatid):#get all messages for related chatid
+    try:
+        response = supabase_admin.table('chat').select("*").eq('chatid', chatid).order("created_at",desc=True).limit(50).execute()
         return response.data
     except Exception as e:
         print("error", e)
 
-def sendMessage(chatid, senderid, chatdata):
+def sendMessage(chatid, senderid, chatdata): #send message to the user
     try:
         response = supabase.table('chat').insert({
             "chatid":chatid,
@@ -312,6 +336,56 @@ def sendMessage(chatid, senderid, chatdata):
             "chatcontent":chatdata,
             "created_at":randlib.nowtime(),
             "readstatus":False
-        })
+        }).execute()
+        return response.data
     except Exception as e:
         print("error", e)
+
+def findExistingChat(userid, id2):
+    try:
+        response = supabase.table('conversation_participants').select('chatid').eq('userid',userid).execute()
+        for r in response.data:
+            found = supabase_admin.table('conversation_participants').select('chatid').eq('chatid',r['chatid']).eq('userid',id2).neq('userid',userid).execute()
+            if found:
+                print('Found!', found.data[0])
+                return found.data[0]
+        print ("No chat found")
+        return False
+    except Exception as e:
+        print("Err", e)
+
+def findChat(chatid):
+    try:
+        response = supabase_admin.table('conversation_details').select('*').eq('chatid', chatid).maybe_single().execute()
+        if response:
+            return True
+        print('No chats found in this ID!')
+        return False
+    except Exception as e:
+        print("err", e)
+
+def findChatMate(chatid, userid):
+    try:
+        response = supabase_admin.table('conversation_participants').select('userid').eq('chatid',chatid).neq('userid',userid).maybe_single().execute()
+        if response:
+            return getUserProfile(response.data['userid'])
+        print('none found')
+        return None
+    except Exception as e:
+        print('err', e)
+#loginUser('slyphyaubern@gmail.com', 'zxc123asd')
+id1 ='44e71903-fbf6-4984-be17-caec8d5739a3' #Slyphy Aubern
+id2 = '8313eebd-ee37-47e0-a086-ba3c5bc86a6c' #Catherine Labrador
+id3 ='5d5d9f0c-172f-4888-9185-2a57b2210e31'# Gerome Carrot
+
+x = '90626cdb-6a06-406d-bc46-3c8a085546b8'
+
+"""
+a = sendMessage(x, id1, "I'm sorry")
+print(getMessages(x))
+print( getAllChat(id1))
+
+findExistingChat(id1, id3)
+"""
+#loginUser('catherinegracelabrador@gmail.com', 'test123456')
+#print(getAllChat(id2))

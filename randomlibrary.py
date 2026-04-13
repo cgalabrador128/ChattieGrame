@@ -36,7 +36,7 @@ if utc_dt.tzinfo is None:
     utc_dt = utc_dt.replace(tzinfo=timezone.utc)
 
 local_dt= utc_dt.astimezone()
-print(local_dt)
+#print(local_dt)
 
 # Json object stuff
 template = {"message":[{

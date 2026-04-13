@@ -1,14 +1,45 @@
-from flask import Flask, flash, session, render_template, request, redirect, url_for
+from flask import Flask, flash, session, render_template, request, redirect, url_for,jsonify
+from flask_socketio import SocketIO, emit
+import os
+import asyncio
+from supabase import acreate_client, AsyncClient
 import data as dat
 from datetime import datetime
 import uuid
 import randomlibrary as rl
 
 app = Flask(__name__)
+sockio = SocketIO(app)
 app.secret_key = str(uuid.uuid4())
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_PERMANENT'] = True
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
 
+async def supabase_listener():
+    supabase: AsyncClient = await acreate_client(SUPABASE_URL, SUPABASE_KEY)
+
+    def on_change(payload):
+        #print("Change: ", payload)
+        event_data = payload['data']
+        if 'INSERT' in str(event_data['type']):
+            new_row = event_data['record']
+            message_content = new_row['chatcontent']
+            sender_id = new_row['userid_sender']
+            chatid = new_row['chatid']
+            timestamp = new_row['created_at']
+            sockio.emit('data_change', payload)
+
+    channel = supabase.channel('chat_changes')
+    await channel.on_postgres_changes(
+        event="INSERT",
+        schema="public",
+        table="chat",
+        callback=on_change
+    ).subscribe()
+
+    while True:
+        await asyncio.sleep(1)
 
 
 @app.route('/')
@@ -70,28 +101,58 @@ def overview():
     return render_template('overview.html')
 
 
-@app.route('/messages/<id>')
+@app.route('/messages/<id>', methods=['GET', 'POST'])
 def messages(id):
-    if id == "#":
-        id = "#"
+    preview = dat.getAllChat(session.get('userid'))
+    if request.method == 'POST':
+        message = request.json.get('message-content')
+        if not message:
+            return jsonify({"status": "error", "message": "No message content"}), 400
+        dat.sendMessage(session.get('chatsession')[0], session.get('userid'), message)
+        return jsonify({'status':'success'}), 200
+    if preview == []:
+        preview = None
+    if id=='#':
+        pass
     else:
         try:
+            profile = []
+            user1 = dat.getUserProfile(session.get('userid'))
+            profile.append(user1)
             user = dat.getUserProfile(id)
-            if user: 
+            if user:
+                print('IT RUNS')
+                user2 = dat.getUserProfile(id)
+                profile.append(user2)
+            
+            existing = dat.findExistingChat(session.get('userid'), id)
+            existing2 = dat.findChat(id)
+            if user and not existing and not existing2: 
                 response = dat.generateinitialMessage(session.get("userid"), id)
                 id = response["chatid"]
-                chathistory = response["chathistory"]
-                session["chatdata"] = response
+                session["chatsession"] = (id, preview, profile)
+                return render_template('messages.html',id=id, preview=preview, profile=profile, messages = None)
+            elif not existing and existing2:
+                print('This runs')
+                user2 = dat.findChatMate(id, session.get('userid'))
+                profile.append(user2)
+                session["chatsession"] = (id, preview, profile)
+                response = dat.getMessages(id)
+                return render_template('messages.html',id=id, preview=preview, profile=profile, messages = response)
+            elif user and existing:
+                id = existing['chatid']
+                session["chatsession"] = (id, preview, profile)
+                response = dat.getMessages(id)
+                return render_template('messages.html',id=id, preview=preview, profile=profile, messages = response)
         except Exception as e:
-            data = dat.getMessage(session.get('userid'), id)
-            id = data["chatid"]
-    return render_template('messages.html', id=id)
+            print("err", e)
+    return render_template('messages.html', id=id, preview=preview, profile = None, messages = None)
 
 
 @app.route('/profile/<userid>', methods =['GET', 'POST'])
 def profile(userid):
     try:
-        if session.get('userid') is None:
+        if 'userid' in session:
             friends = dat.getUserFriends(session.get('userid'))
             profile = dat.getUserProfile(session.get('userid'))
             return render_template('profile.html', user=session.get('userid'), friends=friends, profile=profile)
@@ -150,19 +211,13 @@ def discover():
 def definedFunc(func):
     if func == "profile_upload":
         return dat.uploadProfilePic(session.get('userid'))
-      
-    elif func == "add_member_button":
-        return dat.joinGroupviaInvite()
-        #unfinished(1)
     return ""
-
-@app.route('/send_message/<text>', methods=['POST'])
-def send_message(text):
-    return rl.appendchat(session["chatdata"]['chathistory'],text, session.get('userid'))
 
 @app.route('/remove_member/<userid>', methods=['POST'])
 def remove_member(userid):
     return dat.removeMember(userid)
 
 if __name__ == '__main__':
+    sockio.start_background_task(lambda: asyncio.run(supabase_listener()))
+    
     app.run(debug=True)

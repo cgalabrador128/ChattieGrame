@@ -30,47 +30,7 @@
                 {% else %}
                     <div class="profile-buttons">
                         <div class="friend-profile-buttons">
-                            <button onclick="window.location.href='/chat/{{ user }}'">Chat</button>
-                            <button onclick="window.location.href='/friend_request/{{ user }}'">Add Friend</button>
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-        <div class="profile-content">
-            <p><strong>Email:</strong> {{ profile.email }}</p>
-            <!-- Add more profile details as needed -->
-        </div>
-        <div class="friends-section">
-            <div class ="friends-header">
-                <h2>Friends</h2>
-            </div>  
-                {% for friend in friends %}
-                <div class="friend">
-                    <img src="{{ friend[1] }}" alt="{{ friend[0] }} profile picture">
-                    <h4>{{ friend[0] }}</h4>
-                </div>
-                <div class="profile-text">
-                    <h1>{{ profile.name }}</h1>
-                    <p class="profile-email">{{ profile.email }}</p>
-                </div>
-                {% endfor %}
-            </div>
-
-            <div class="header-buttons-container">
-                {% if session.get('userid') == user %}
-                    <div class="header-buttons">
-                        <div class="profile-buttons">
-                            <label for="fileInput">Choose Image</label>
-                            <input type="file" id="fileInput" accept="image/*">
-                            <button onclick="uploadImage()">Update Profile</button>
-                        </div>
-                        <p id="status" class="status"></p>
-                    </div>
-                {% else %}
-                    <div class="profile-buttons">
-                        <div class="friend-profile-buttons">
-                            <button onclick="window.location.href='/chat/{{ user }}'">Chat</button>
+                            <button onclick="window.location.href='/messages/{{ user }}'">Chat</button>
                             <button onclick="window.location.href='/friend_request/{{ user }}'">Add Friend</button>
                         </div>
                     </div>

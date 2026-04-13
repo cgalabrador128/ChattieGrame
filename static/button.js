@@ -1,24 +1,23 @@
-$(function() {
-    $('#profile_button').on('click', function(e) {
-    e.preventDefault()
-    $.getJSON('/d_Func/profile_upload',
-        function(data) {
-        //do nothing
-    });
-    return false;
-    });
+const preview =document.getElementsByClassName('message-sidebar-content')
+const socket = io();
+
+socket.on('data_change',(msg)=>{
+  
 });
 
-$(function() {
-    $('.add-member-button').on('click', function(e) {
-    e.preventDefault()
-    $.getJSON('/d_Func/add_member_button',
-        function(data) {
-        //do nothing
-    });
-    return false;
-    });
-});
+
+
+function sendData() {
+  fetch('/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ key: 'value' })
+  })
+  .then(response => response.json())
+  .then(data => console.log('Success:', data));
+}
+
+
 
 async function uploadImage() {
       const fileInput = document.getElementById("fileInput");
