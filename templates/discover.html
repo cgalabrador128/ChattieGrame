@@ -17,27 +17,16 @@
             <button type="submit" class="search-button">Search</button>
         </form>
     </div>
-
-    <div class="discover-grid">
-        {% if users %}
-            {% for user in users %}
-                {% if user.userid != session.get('userid') %}
-                    <div class="user-card">
-                        <div class="card-top"></div>
-                        <div class="user-info">
-                            <div class="user-picture">
-                                <a href="/profile/{{ user.userid }}">
-                                    <img src="{{ user.profile_image }}" alt="Profile Picture">
-                                </a>
-                            </div>
-                            <div class="user-name">
-                                <a href="/profile/{{ user.userid }}">{{ user.name }}</a>
-                            </div>
-                        </div>
-                        <div class="card-bot">
-                            <button class="action-button" onclick="window.location.href='/chat/{{ user.userid }}'">Chat</button>
-                            <button class="action-button outline-button" onclick="window.location.href='/friend_request/{{ user.userid }}'">Add Friend</button>
-                        </div>
+    <div class = "discover-content">
+        
+        {% for user in users %}
+            {% if user.userid != session.get('userid') %}
+                <div class ="user-card">
+                    <div class="profile-picture"><a href="/profile/{{ user.userid }}"><img src="{{ user.profile_image }}" alt="Profile Picture"></a></div>
+                    <div class="name"><a href="/profile/{{ user.userid }}">{{ user.name }}</a></div>
+                    <div class="button"> 
+                        <button onclick="window.location.href='/messages/{{ user.userid }}'">Chat</button>
+                        <button onclick="window.location.href='/friend_request/{{ user.userid }}'">Add Friend</button>
                     </div>
                 {% endif %}
             {% endfor %}

@@ -5,52 +5,66 @@
 {% endblock %}
 
 {% block body %}
-<div class="message-container">
+<div class="message-container" 
+    data-chat-id="{{ id }}" 
+    data-user-id="{{ session.get('userid') }}"
+    data-chatmate-image="{{ profile[1]['profile_image'] if profile and profile|length > 1 else '' }}"
+    >
     <div class="message-sidebar">
-        <div class="message-item"><h3><a href = "messages" id="truelaloo">Messages</a></h3></div>
-        <div class="request-item"><h3><a href = "requests">Requests</a></h3></div>
+        <div class="message-item"><h3><a href = "{{ url_for('messages', id='#') }}" id="truelaloo">Messages</a></h3></div>
+        <div class="request-item"><h3><a href = "{{ url_for('requests', id='#') }}">Requests</a></h3></div>
         <div class="message-sidebar-content">
             <!--MESSAGE CONTENT-->
-            <div class ="message-preview">
-                <img src = "{{ url_for('static', filename='resources/nubcat.jpg') }}">
-                <div class='h2'>Name Name</div>
-                <div class = "body">Message message message message mess</div>
-                <div class="time">3m ago</div>
-            </div>
+            {% if preview != None %}
+                {%for prev in preview %}
+                <a href ="/messages/{{ prev[0] }}">
+                    <div class ="message-preview">
+                        <img src = "{{ prev[1].profile_image }}">
+                        <div class='h2'>{{ prev[1].name }}</div>
+                        <div class = "body">{{ prev[2][0].chatcontent }}</div>
+                        <div class="time">.. ago</div>
+                    </div>
+                </a>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
+    <!--MESSAGE CONTENT-->
     <div class="message-content">
        <div class="message-content-header">
-        <img src ="{{ url_for('static', filename='resources/nubcat.jpg') }}">
-        <h2>Name Name</h2>
-        <p>Active Now</p>
+
+        {% if profile != None %}
+            <img src ="{{ profile[1].profile_image }}">
+            <h2>{{ profile[1].name }}</h2>
+            <p>Active Now</p>
+        {% endif %}
+
        </div>
         <div class="message-content-body">
-            <!--MESSAGE CONTENT-->
             <div class="mc-body">
                 <!--For loop here-->
-                <div class="sender">
-                    <img src ="{{ url_for('static', filename='resources/nubcat.jpg') }}">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                {% if messages != None %}
+                    {% for message in messages %}
+                        {% if session.get('userid') == message.userid_sender %}
+                            <div class="receiver"><p>{{ message.chatcontent }}</p></div>
+                        {% else %}
+                            <div class="sender">
+                                <img src ="{{ profile[1]['profile_image'] }}">
+                                <p>{{ message.chatcontent }}</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
                 </div>
-                <div class="receiver"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p></div>
-                <div class="receiver"><p>lorem upsumf ad macs guogdjnmiadgbmimuvfoh yndjm</p></div>
-                <div class="receiver"><p>lorem upsumf ad macs guogdjnmiadgbmimuvfoh yndjm</p></div>
-                <div class="receiver"><p>lorem upsumf ad macs guogdjnmiadgbmimuvfoh yndjm</p></div>
-                <div class="receiver"><p>lorem upsumf ad macs guogdjnmiadgbmimuvfoh yndjm</p></div>
-                  <div class="sender">
-                    <img src ="{{ url_for('static', filename='resources/nubcat.jpg') }}">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                </div>
-            </div>
             <div class="mc-interact">
-                <form action="/messages" method="post">
+                <form id = "chat-form">
                     <input type="text" id="message-content" name="message-content">
-                    <input type="button" id="send-button" onclick="" value="➤" >
+                    <button type="submit" id="send-button">➤</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
+{% include 'scripts.html' %}
+<script src ="{{ url_for('static', filename='message.js') }}"></script>
 {% endblock %}

@@ -328,3 +328,54 @@ WITH CHECK (
   bucket_id = 'profile_images' AND
   auth.role() = 'service_role'
 );
+
+-- (Optional) disable RLS until you re-create policies if it’s currently blocking you
+-- ALTER TABLE public.conversation_participants DISABLE ROW LEVEL SECURITY;
+
+-- Drop the policies we previously created for conversation_participants
+DROP POLICY IF EXISTS "participants_select_member_only" ON public.conversation_participants;
+DROP POLICY IF EXISTS "participants_insert_self_only" ON public.conversation_participants;
+DROP POLICY IF EXISTS "participants_update_self_only" ON public.conversation_participants;
+DROP POLICY IF EXISTS "participants_delete_self_only" ON public.conversation_participants;
+
+-- Re-enable RLS
+ALTER TABLE public.conversation_participants ENABLE ROW LEVEL SECURITY;
+
+-- Users can only see their own membership rows (no recursion)
+CREATE POLICY "participants_select_self_rows"
+ON public.conversation_participants
+FOR SELECT
+TO authenticated
+USING (
+  "userid" = auth.uid()
+);
+
+-- Users can only insert themselves (prevents adding other users)
+CREATE POLICY "participants_insert_self_only"
+ON public.conversation_participants
+FOR INSERT
+TO authenticated
+WITH CHECK (
+  "userid" = auth.uid()
+);
+
+-- Users can only update their own membership row
+CREATE POLICY "participants_update_self_only"
+ON public.conversation_participants
+FOR UPDATE
+TO authenticated
+USING (
+  "userid" = auth.uid()
+)
+WITH CHECK (
+  "userid" = auth.uid()
+);
+
+-- Users can only delete their own membership row
+CREATE POLICY "participants_delete_self_only"
+ON public.conversation_participants
+FOR DELETE
+TO authenticated
+USING (
+  "userid" = auth.uid()
+);
