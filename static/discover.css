@@ -1,189 +1,186 @@
-.discover-container{
-    display:grid;
-    grid-template-areas:
-    "search search"
-    "discover-content discover-content";
-    grid-template-rows: 1fr 5fr;
-}
-.discover-container div{
-    background-color: white;
-    margin-top: 20px;
+@import url('fonts.css');
+
+.discover-container {
+    margin: 20px 0 50px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-family: 'Poppins', sans-serif;
 }
 
-/*search area*/
-.discover-container div.search{
-    grid-area: search;
+.discover-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
 }
-.discover-container div.search form {
+
+.discover-grid:has(.no-results) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.no-results {
+    color: #545454;
+    font-size: 16px;
+}
+
+.discover-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border-radius: 25px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.header-title h1 {
+    margin: 0;
+    font-family: 'Poppins-Bold', sans-serif;
+    letter-spacing: 1px;
+    color: black;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+    max-width: 500px;
+}
+
+.search-form .type-input {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-form input {
+    font-family: 'Poppins', sans-serif;
+    padding: 12px 20px;
+    border-radius: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    outline: none;
+    font-size: 14px;
+}
+
+.search-form input:focus {
+    border-color: #545454;
+    outline: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2)
+}
+
+.search-form input:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2)
+}
+
+
+.user-card {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.user-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-top {
+    height: 60px;
+    background-color: #ffbd59;
     width: 100%;
 }
 
-.discover-container div.search form input[type="text"] {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 50vw;
-}
-
-.discover-container div.search form button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #ffbd59;
-    color: black;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.discover-container div.search form button:hover {
-    background-color: white;
-    border-radius: 10px;
-        font-family: Poppins-bold;
-}
-
-/*content area*/
-.discover-container div.discover-content{
-    grid-area: discover-content;
-    background-color: #d9d9d9;
-    display: grid;
-    grid-template-areas: "user-card user-card user-card user-card user-card";
-    grid-template-columns: repeat(6, 1fr);
-    height:400px;
-    overflow-y: visible; 
-    overflow-x: hidden;
-}
-.discover-container div.discover-content .user-card{
-    display: grid;
-    grid-template-areas: 
-    "profile-picture"
-    "name"
-    "button"
-    "button";
-    grid-template-rows: 3fr 1fr 1fr 1fr;
-    gap:2px;
-    background-color: white;
-    height: 300px;
-    width: 150px;
+.user-info {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    border-color: #ffbd59;
-    border-style: groove;
-    margin: 20px;
+    padding: 0 20px;
+    margin-top: -35px;
+    gap: 15px;
 }
 
-.discover-container div.discover-content .user-card div{
-    background-color: white;
-    border-radius: 10px;
+.user-picture {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-.discover-container div.discover-content .user-card img{
-    width: 100px;
-    height: 100px;
-    border-radius: 20%;
-    image-rendering: optimizeSpeed;
-    image-orientation: from-image;
-}
-.discover-container div.discover-content .user-card div.profile-picture{
-    grid-area: profile-picture;
+.user-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.discover-container div.discover-content .user-card .name{
-    grid-area:name;
-    text-align: center;
-    height: 30px;
-}
-.discover-container div.discover-content .user-card a{
-  
-    font-family: Poppins-bold;
+.user-name a {
+    font-family: 'Poppins-Bold', sans-serif;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 16px;
     color: black;
-    margin-left: 10px;
-    margin-right: 10px;
-}
-.discover-container div.discover-content .user-card a:hover{
-    text-decoration: underline;
-    font-family: Poppins-bold;
+    transition: color 0.3s ease;
 }
 
-.discover-container div.discover-content .user-card div.button{
-    grid-area: button;
-    justify-content: center;
-    align-items: center;
+.user-name a:hover {
+    color: #ffbd59;
+}
+
+.card-bot {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.search-button,
+.action-button {
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-family: 'Poppins-Bold', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    background-color: #545454;
+    color: white;
     text-align: center;
 }
-.discover-container div.discover-content .user-card button{
-    font-family: Poppins-bold;
-    padding: 10px 20px;
-    font-size: 16px;
+
+.outline-button {
+    background-color: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #545454;
+}
+
+.search-button:hover,
+.action-button:hover {
     background-color: #ffbd59;
     color: black;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    text-decoration: none;
-    width: 130px;
+    transform: scale(1.05);
+    border-color: #ffbd59;
 }
 
-.discover-container div.discover-content .user-card button:hover {
-    background-color: white;
-    border-radius: 20px;
-    font-family: Poppins-bold;
+.search-button:active,
+.action-button:active {
+    background-color: #ffbd59;
+    color: black;
+    transform: scale(0.95);
 }
 
-@media screen and (max-width:1270px){
-    .discover-container div.discover-content{
-    grid-area: discover-content;
-    background-color: #d9d9d9;
-    display: grid;
-    grid-template-areas: "user-card user-card";
-    grid-template-columns: repeat(5, 1fr);
-    height:400px;
-    overflow-y: auto;  
-    overflow-x: hidden;
-}
-}
-
-@media screen and (max-width:1050px){
-    .discover-container div.discover-content{
-    grid-area: discover-content;
-    background-color: #d9d9d9;
-    display: grid;
-    grid-template-areas: "user-card user-card";
-    grid-template-columns: repeat(4, 1fr);
-    height:400px;
-    overflow-y: auto;  
-    overflow-x: hidden;
-}
-}
-
-@media screen and (max-width:850px){
-    .discover-container div.discover-content{
-    grid-area: discover-content;
-    background-color: #d9d9d9;
-    display: grid;
-    grid-template-areas: "user-card user-card";
-    grid-template-columns: repeat(3, 1fr);
-    height:400px;
-    overflow-y: auto;  
-    overflow-x: hidden;
-}
-}
-
-@media screen and (max-width:650px){
-    .discover-container div.discover-content{
-    grid-area: discover-content;
-    background-color: #d9d9d9;
-    display: grid;
-    grid-template-areas: "user-card user-card";
-    grid-template-columns: repeat(2, 1fr);
-    height:400px;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
+.search-button:focus,
+.action-button:focus {
+    outline: none;
 }
 
