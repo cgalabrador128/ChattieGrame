@@ -7,7 +7,7 @@
     "header header"
     "menu content"
     "menu footer";
-    grid-template-columns: 0.5fr 6fr;
+    grid-template-columns: 0.45fr 6fr;
     /*
     background-color: yellowgreen;
     gap: 3px;*/

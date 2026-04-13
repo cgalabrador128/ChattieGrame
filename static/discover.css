@@ -125,6 +125,11 @@
     object-fit: cover;
 }
 
+.user-name {
+    text-align: center;
+    width: 100%
+}
+
 .user-name a {
     font-family: 'Poppins-Bold', sans-serif;
     text-decoration: none;

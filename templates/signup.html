@@ -11,46 +11,50 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="auth-card">
-            <div class="auth-header">
-                <img src="{{ url_for('static', filename='resources/chattiegrameicon.ico') }}"  class="auth-logo">
-                <h1>CHATTIEGRAME</h1>
-                <h2>Create a New Account</h2>
-            </div>
+<div class="container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <img src="{{ url_for('static', filename='resources/chattiegrameicon.ico') }}" class="auth-logo">
+            <h1>CHATTIEGRAME</h1>
+            <h2>Create a New Account</h2>
+        </div>
 
-            {% if error %}
-                <div class="alert error-alert">
-                    {{ error }}
-                </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert {% if category == 'error' %}error-alert{% else %}success-alert{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
             {% endif %}
+        {% endwith %}
 
-            <div class="auth-form">
-                <form action="/signup" method="post">
-                    <div class="type-input">
-                        <label>Name</label>
-                        <input type="text" name="name" placeholder="Your name" required>
-                    </div>
-
-                    <div class="type-input">
-                        <label>Email</label>
-                        <input type="email" name="email" placeholder="Enter your email" required>
-                    </div>
-
-                    <div class="type-input">
-                        <label>Password</label>
-                        <input type="password" name="password" placeholder="At least 8 characters" minlength="8" required>
-                    </div>
-
-                    <div class="submit">
-                        <button type="submit">Create Account</button>
-                    </div>
-                </form>
-                <div class="auth-footer">
-                    <a href="/login">I already have an account.</a>
+        <div class="auth-form">
+            <form action="/signup" method="post">
+                <div class="type-input">
+                    <label>Name</label>
+                    <input type="text" name="name" placeholder="Your name">
                 </div>
+
+                <div class="type-input">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="Enter your email">
+                </div>
+
+                <div class="type-input">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="At least 8 characters" minlength="8">
+                </div>
+
+                <div class="submit">
+                    <button type="submit">Create Account</button>
+                </div>
+            </form>
+            <div class="auth-footer">
+                <a href="/login">I already have an account.</a>
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>

@@ -6,11 +6,12 @@ body {
     margin: 0;
     background-color: #545454;
 
-    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('resources/ses.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('resources/background.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    overflow:hidden;
 }
 
 .container {
@@ -19,10 +20,11 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: 10px;
+    box-sizing: border-box;
 }
 
 .auth-card {
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 162, 0, 0.2) !important;
     backdrop-filter: blur(15px);
     width: 100%;
     max-width: 420px;
@@ -31,6 +33,10 @@ body {
     border: 1px solid #545454;
     text-align: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.auth-card div {
+    background-color: transparent !important;
 }
 
 .auth-logo {
@@ -49,7 +55,7 @@ body {
 }
 
 .auth-header h2 {
-    color: #545454;
+    color: white;
     font-size: 22px;
     margin-top: 0;
     margin-bottom: 20px;
@@ -68,17 +74,18 @@ body {
 }
 
 .type-input label {
-    color: #545454;
+    color: white;
     font-family: 'Poppins-Bold', sans-serif;
     margin-bottom: 10px;
 }
 
 .type-input input {
-    font-family: Poppins;
+    font-family: Poppins, sans-serif;
     padding: 15px;
     border-radius: 10px;
-    border: 0;
-    border-color: #545454;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    outline: none;
     transition: all 0.3s ease;
 }
 
@@ -95,12 +102,12 @@ body {
 
 .submit button {
     width: 100%;
-    background-color: #545454;
+    background-color: transparent;
+    border: 1px solid;
     color: white;
-    border: none;
     padding: 15px;
     border-radius: 6px;
-    font-family: Poppins, sans-serif;
+    font-family: 'Poppins-Bold', sans-serif;
     font-size: 16px;
     font-weight: normal;
     cursor: pointer;
@@ -110,7 +117,6 @@ body {
 }
 
 .submit button:hover {
-    font-family: 'Poppins-Bold', sans-serif;
     background-color: #ffbd59;
     color: black;
 }
@@ -133,8 +139,9 @@ body {
 }
 
 .auth-footer a {
-    color: #545454;
+    color: white;
     text-decoration: none;
+    font-family: 'Poppins', sans-serif;
     transition: all 0.3s ease;
 }
 
@@ -148,4 +155,15 @@ body {
     color: #ffbd59;
     font-family: 'Poppins-Bold', sans-serif;
     text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.error-alert {
+    color: red;
+    border: 2px solid red;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-family: 'Poppins-Bold', sans-serif;
+    font-size: 14px;
+    background-color: white;
 }

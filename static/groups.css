@@ -248,6 +248,8 @@
     font-family: 'Poppins-Bold', sans-serif;
     margin-bottom: 10px;
     color: #545454;
+    padding-left: 10px;
+
 }
 
 .type-input input,
@@ -305,16 +307,34 @@
 .group-header-title {
     padding: 25px 30px 15px 30px;
     display: flex;
-    align-items: flex-start;
-    gap: 5px;
+    align-items: center;
+    gap: 15px;
 }
 
 .group-header-title h2 {
-    margin: 0 0 0 15px;
-    font-size: 26px;
+    margin: 0;
+    font-size: 24px;
     color: black;
     font-family: 'Poppins-Bold', sans-serif;
 }
+
+.view-group-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    flex-shrink: 0;
+}
+
+.view-group-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 
 .group-header-tabs {
     display: flex;
@@ -630,10 +650,11 @@
 
 .popup {
     position: fixed;
-    top: 60px;
-    left: 100px;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
+    background-color: rgba(0, 0, 0, 0.5) !important;
     backdrop-filter: blur(5px);
     display: flex;
     justify-content: center;
@@ -643,6 +664,7 @@
 
 .popup-card {
     position: relative;
+    background-color: white;
     width: 100%;
     max-width: 400px;
     display: flex;
@@ -658,6 +680,7 @@
     font-family: 'Poppins-Bold', sans-serif;
     display: inline-block;
     align-self: flex-start;
+    padding-left: 10px;
 }
 
 .popup-card form {

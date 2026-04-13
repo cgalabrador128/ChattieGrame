@@ -12,6 +12,9 @@
         <div class="view-group-header">
             <div class="group-header-title">
                 <button class="back-button" onclick="window.location.href='/groups'">Back</button>
+                <div class="view-group-icon">
+                    <img src="{{ url_for('static', filename='resources/nubcat.jpg') }}" alt="Group Icon">
+                </div>
                 <h2>{{ groupinfo.name }}(Remove Me When Fixed 😛)</h2>
             </div>
             <div class="group-header-tabs">
@@ -201,9 +204,9 @@
                     </div>
                     <button class="add-button">Add</button>
                 </div>
-{#                <div class="no-friends">#}
-{#                    <p>You don't have any friends to add now.</p>#}
-{#                </div>#}
+                {#                <div class="no-friends">#}
+                {#                    <p>You don't have any friends to add now.</p>#}
+                {#                </div>#}
             </div>
         </div>
     </div>

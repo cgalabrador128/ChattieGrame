@@ -19,21 +19,22 @@ def login():
             email = request.form.get('email')
             password = request.form.get('password')
             data = dat.loginUser(email, password)
-            session['userid'] = data.id
-            session.permanent = True
 
-            if email and password and session.get('userid') is not None:
-                flash('Login successful!')
+            if data and hasattr(data, 'id'):
+                session['userid'] = data.id
+                session.permanent = True
+                flash('Login successful!', 'success')
                 return redirect(url_for('overview'))
 
             else:
-                error = "Invalid email or password. Please try again."
-                return render_template('login.html', error=error)
+                flash("Invalid email or password. Please try again.", "error")
+                return redirect(url_for('login'))
         return render_template('login.html')
 
     except Exception as e:
         print("Error during login: ", e)
-        return render_template('login.html')
+        flash("A system error occurred. Please try again later.", "error")
+        return redirect(url_for('login'))
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -41,40 +42,49 @@ def signup():
     try:
         if session.get('userid') is not None:
             return redirect(url_for('overview'))
-        else:
-            if request.method == 'POST':
-                name = request.form.get('name')
-                email = request.form.get('email')
-                password = request.form.get('password')
 
-                if not name or not email or not password:
-                    return render_template('signup.html', error="All fields are required")
+        if request.method == 'POST':
+            name = request.form.get('name')
+            email = request.form.get('email')
+            password = request.form.get('password')
 
-                result = dat.signupUser(name, email, password)
-                if result:
-                    flash('Signup successful! Please check your email to verify your account.')
-                    return redirect(url_for('overview'))
-                else:
-                    return render_template('signup.html', error="Signup failed. Please try again.")
+            if not name or not email or not password:
+                flash("All fields are required", "error")
+                return redirect(url_for('signup'))
 
-            return render_template('signup.html')
+            result = dat.signupUser(name, email, password)
+            if result:
+                flash('Signup successful! Please check your email to verify your account.', 'success')
+                return redirect(url_for('login'))
+            else:
+                flash("Signup failed. Email is already  registered.", "error")
+                return redirect(url_for('signup'))
+
+        return render_template('signup.html')
     except Exception as e:
         print("Error during signup: ", e)
-        return render_template('signup.html')
-
+        flash("A system error occurred. Please try again later.", "error")
+        return redirect(url_for('signup'))
 
 @app.route('/overview')
 def overview():
+    if session.get('userid') is None:
+        return redirect(url_for('login'))
     return render_template('overview.html')
 
 
 @app.route('/messages')
 def messages():
+    if session.get('userid') is None:
+        return redirect(url_for('login'))
     return render_template('messages.html')
 
 
-@app.route('/profile/<userid>', methods =['GET', 'POST'])
+@app.route('/profile/<userid>', methods=['GET', 'POST'])
 def profile(userid):
+    if session.get('userid') is None:
+        return redirect(url_for('login'))
+
     try:
         if session.get('userid') is None:
             friends = dat.getUserFriends(session.get('userid'))
@@ -91,6 +101,9 @@ def profile(userid):
 
 @app.route('/groups', methods=['GET', 'POST'])
 def groups():
+    if session.get('userid') is None:
+        return redirect(url_for('login'))
+
     if request.method == 'POST':
         if request.form['group-name']:
             groupName = request.form.get('group-name')
@@ -99,7 +112,7 @@ def groups():
             id = dat.createGroup(groupName, session.get('userid'))
             members = dat.getGroupMembers(id)
             groupinfo = dat.getGroup(id)
-            return redirect(url_for('view_group', groupid = str(id)), members=members, groupinfo = groupinfo)
+            return redirect(url_for('view_group', groupid=str(id)), members=members, groupinfo=groupinfo)
         return redirect(url_for('groups'))
     groups = dat.getUserGroups(session.get('userid'))
     return render_template('groups.html', groups=groups)
@@ -107,11 +120,14 @@ def groups():
 
 @app.route('/view-group/<groupid>')
 def view_group(groupid):
+    if session.get('userid') is None:
+        return redirect(url_for('login'))
+
     try:
-        session["currentgroup"]= groupid
+        session["currentgroup"] = groupid
         groupMembers = dat.getGroupMembers(groupid)
         groupinfo = dat.getGroup(groupid)
-        return render_template('view-group.html', members = groupMembers, groupinfo = groupinfo)
+        return render_template('view-group.html', members=groupMembers, groupinfo=groupinfo)
     except Exception as e:
         print("Error loading data ", e)
     return render_template('view-group.html', members=None)
@@ -119,11 +135,17 @@ def view_group(groupid):
 
 @app.route('/requests')
 def requests():
+    if session.get('userid') is None:
+        return redirect(url_for('login'))
+
     return render_template('requests.html')
 
 
-@app.route('/discover', methods=['GET','POST'])
+@app.route('/discover', methods=['GET', 'POST'])
 def discover():
+    if session.get('userid') is None:
+        return redirect(url_for('login'))
+
     if request.method == 'POST':
         query = request.form.get('query')
         users = dat.findUserProfile(query)
@@ -131,18 +153,22 @@ def discover():
     users = dat.getAllUsers()
     return render_template('discover.html', users=users)
 
-@app.route('/d_Func/<func>', methods=['GET','POST'])
+
+@app.route('/d_Func/<func>', methods=['GET', 'POST'])
 def definedFunc(func):
     if func == "profile_upload":
         return dat.uploadProfilePic(session.get('userid'))
-      
+
     elif func == "add_member_button":
         return dat.joinGroupviaInvite()
-        #unfinished(1)
+        # unfinished(1)
     return ""
+
 
 @app.route('/remove_member/<userid>', methods=['POST'])
 def remove_member(userid):
     return dat.removeMember(userid)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
