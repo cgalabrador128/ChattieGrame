@@ -8,7 +8,7 @@
     <div class="profile-container">
         <div class="profile-header">
             <div class="profile-info">
-                <div class="profile-pic">
+                <div class="profile-pic" onclick="showPopup('.image-popup')" style="cursor: pointer;">
                     <img src="{{ profile.profile_image }}" alt="Profile Picture" class="profile-picture">
                 </div>
                 <div class="profile-text">
@@ -41,8 +41,10 @@
         <div class="profile-grid">
             <div class="about-card">
                 <div class="card-top">
-                    <h2>About Me</h2>
-                    <button onclick="showPopup('.edit-profile-popup')">Edit Profile</button>
+                    <h2>About</h2>
+                    {% if session.get('userid') == user %}
+                        <button onclick="showPopup('.edit-profile-popup')">Edit Profile</button>
+                    {% endif %}
                 </div>
                 <div class="card-content">
                     <div class="info-group">
@@ -65,9 +67,10 @@
                 <div class="friends-list">
                     {% if friends %}
                         {% for friend in friends %}
-                            <div class="friend">
+                            <div class="friend" onclick="window.location.href='/profile/{{ friend[2] }}'"
+                                 style="cursor: pointer;">
                                 <div class="friend-icon">
-                                    <img src="{{ friend[1] }}" alt="{{ friend[0] }} profile picture" onclick="window.location.href='/profile/{{ friend[2] }}'">
+                                    <img src="{{ friend[1] }}" alt="{{ friend[0] }} profile picture">
                                 </div>
                                 <span class="friend-name">{{ friend[0] }}</span>
                             </div>
@@ -96,7 +99,9 @@
                     </div>
 
                     <div class="popup-footer">
-                        <button type="button" class="save-changes-button" onclick="closePopup('.edit-profile-popup')">Save Changes</button>
+                        <button type="button" class="save-changes-button" onclick="closePopup('.edit-profile-popup')">
+                            Save Changes
+                        </button>
                     </div>
                 </form>
             </div>
@@ -117,7 +122,9 @@
                                     </div>
                                     <span class="popup-friend-name">{{ friend[0] }}</span>
                                 </div>
-                                <button class="popup-view-button" onclick="window.location.href='/profile/{{ friend[2] }}'">View</button>
+                                <button class="popup-view-button"
+                                        onclick="window.location.href='/profile/{{ friend[2] }}'">View
+                                </button>
                             </div>
                         {% endfor %}
                     {% else %}
@@ -126,20 +133,30 @@
                 </div>
             </div>
         </div>
+
+        <div class="popup image-popup" style="display: none;">
+            <div class="popup-image-card">
+                <span class="close-button" onclick="closePopup('.image-popup')">X</span>
+                <img src="{{ profile.profile_image }}" class="popup-image">
+            </div>
+        </div>
     </div>
 
     <script>
         function showPopup(className) {
             document.querySelector(className).style.display = 'flex';
+            document.body.style.overflow = 'hidden';
         }
 
         function closePopup(className) {
             document.querySelector(className).style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
 
         window.onclick = function (event) {
             if (event.target.classList.contains('popup')) {
                 event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
             }
         }
     </script>

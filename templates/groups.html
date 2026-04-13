@@ -51,8 +51,8 @@
 
                 <form action="/groups" method="POST">
                     <div class="type-input">
-                        <label>Uncertain Procedure</label>
-                        <input type="text" placeholder="Uncertain Procedure For Now" required>
+                        <label>Group Code</label>
+                        <input type="text" placeholder="Enter the Group Code" required>
                     </div>
                     <button type="submit" class="join-button">Join Group</button>
                 </form>
@@ -78,15 +78,18 @@
     <script>
         function showPopup(className) {
             document.querySelector(className).style.display = 'flex';
+            document.body.style.overflow = 'hidden';
         }
 
         function closePopup(className) {
             document.querySelector(className).style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
 
         window.onclick = function (event) {
             if (event.target.classList.contains('popup')) {
                 event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
             }
         }
     </script>

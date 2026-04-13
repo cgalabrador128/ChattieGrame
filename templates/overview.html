@@ -13,7 +13,7 @@
             </div>
 
             <div class="notif-button">
-                <button>Notifications</button>
+                <button onclick="showPopup('.notif-popup')">Notifications</button>
             </div>
 
         </div>
@@ -246,5 +246,50 @@
         </div>
     </div>
 
+    <div class="popup notif-popup" style="display: none;">
+        <div class="popup-card">
+            <span class="close-button" onclick="closePopup('.notif-popup')">X</span>
+            <h2>Notifications</h2>
 
+            <div class="notif-list">
+
+                {% if True %}
+                    <div class="notif-card">
+                        <div class="notif-info">
+                            <div class="notif-icon">
+                                <img src="{{ url_for('static', filename='resources/nubcat.jpg') }}">
+                            </div>
+                            <span class="notif-text">
+                                This is a sample notification.
+                            </span>
+                        </div>
+                        <button class="notif-action-button">Blegh</button>
+                    </div>
+
+                {% else %}
+                    <p class="no-notifs">There aren't any notifications for now.</p>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPopup(className) {
+            document.querySelector(className).style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePopup(className) {
+            document.querySelector(className).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function (event) {
+            if (event.target.classList.contains('popup')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
 {% endblock %}

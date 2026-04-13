@@ -69,7 +69,7 @@ def loginUser(email, password):
         if response.user:
             print("Login successful.")
             return response.user
-        
+
     except Exception as e:
         print("Login failed with error: ", e)
         return None
@@ -87,13 +87,13 @@ def getUserFriends(userid): #returns all user friends depending on the userid
         friends = []
         response = supabase_admin.table('userfriends').select('*').execute()
         for i in response.data:
-            if i['userid_1'] == userid or i['userid_2'] == userid: 
+            if i['userid_1'] == userid or i['userid_2'] == userid:
                 if i['userid_1'] == userid:
                     i['userid_2'] = getUserProfile(i['userid_2'])
-                    friends.append((i['userid_2']['name'], i['userid_2']['profile_image']))
+                    friends.append((i['userid_2']['name'], i['userid_2']['profile_image'], i['userid_2']['userid']))
                 else:
                     i['userid_1'] = getUserProfile(i['userid_1'])
-                    friends.append((i['userid_1']['name'], i['userid_1']['profile_image']))
+                    friends.append((i['userid_1']['name'], i['userid_1']['profile_image'], i['userid_1']['userid']))
         return friends
     except Exception as e:
         print("Error fetching friends: ", e)
@@ -113,7 +113,7 @@ def getUserProfile(userid): # gets userprofile depending on the userid only
         return None
 
 def findUserProfile(searchData): # finds userprofile based on userid/name
-    
+
     try:
         response = supabase_admin.table('app_user').select("*").eq("userid", searchData).execute()
         if response.data:
@@ -130,7 +130,7 @@ def findUserProfile(searchData): # finds userprofile based on userid/name
             print("User not found")
             return None
 
-def uploadProfilePic(userid): #uploads profile picture 
+def uploadProfilePic(userid): #uploads profile picture
     for ext in [".jpg", ".jpeg", ".png", ".webp", ".gif"]:
         try:
             supabase.storage.from_("profile_images").remove([f"{userid}{ext}"])
@@ -232,7 +232,8 @@ def getGroupMembers(groupid):
 
 def getGroup(groupid):
     try:
-        return supabase_admin.table("groupie").select('*').eq('groupid', groupid).single().execute()
+        response = supabase_admin.table("groupie").select('*').eq('groupid', groupid).single().execute()
+        return response.data
     except Exception as e:
         print(e)
         return None
