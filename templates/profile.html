@@ -29,10 +29,8 @@
                     </div>
                 {% else %}
                     <div class="profile-buttons">
-                        <div class="friend-profile-buttons">
-                            <button onclick="window.location.href='/chat/{{ user }}'">Chat</button>
-                            <button onclick="window.location.href='/friend_request/{{ user }}'">Add Friend</button>
-                        </div>
+                        <button onclick="window.location.href='/chat/{{ user }}'">Chat</button>
+                        <button onclick="window.location.href='/friend_request/{{ user }}'">Add Friend</button>
                     </div>
                 {% endif %}
             </div>
@@ -43,8 +41,8 @@
                 <div class="card-top">
                     <h2>About</h2>
                     {% if session.get('userid') == user %}
-                    <button onclick="showPopup('.edit-profile-popup')">Edit Profile</button>
-                    {%  endif %}
+                        <button onclick="showPopup('.edit-profile-popup')">Edit Profile</button>
+                    {% endif %}
                 </div>
                 <div class="card-content">
                     <div class="info-group">
@@ -67,7 +65,8 @@
                 <div class="friends-list">
                     {% if friends %}
                         {% for friend in friends %}
-                            <div class="friend" onclick="window.location.href='/profile/{{ friend[2] }}'" style="cursor: pointer;">
+                            <div class="friend" onclick="window.location.href='/profile/{{ friend[2] }}'"
+                                 style="cursor: pointer;">
                                 <div class="friend-icon">
                                     <img src="{{ friend[1] }}" alt="{{ friend[0] }} profile picture">
                                 </div>
@@ -98,7 +97,9 @@
                     </div>
 
                     <div class="popup-footer">
-                        <button type="button" class="save-changes-button" onclick="closePopup('.edit-profile-popup')">Save Changes</button>
+                        <button type="button" class="save-changes-button" onclick="closePopup('.edit-profile-popup')">
+                            Save Changes
+                        </button>
                     </div>
                 </form>
             </div>
@@ -119,7 +120,9 @@
                                     </div>
                                     <span class="popup-friend-name">{{ friend[0] }}</span>
                                 </div>
-                                <button class="popup-view-button" onclick="window.location.href='/profile/{{ friend[2] }}'">View</button>
+                                <button class="popup-view-button"
+                                        onclick="window.location.href='/profile/{{ friend[2] }}'">View
+                                </button>
                             </div>
                         {% endfor %}
                     {% else %}

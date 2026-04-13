@@ -15,13 +15,14 @@
 }
 
 .profile-header {
-   display: flex;
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 25px;
+    padding: 25px;
     border-radius: 20px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.15);
+
 }
 
 .profile-info {
@@ -49,6 +50,7 @@
 .profile-text h1 {
     margin: 0;
     font-family: 'Poppins-Bold', sans-serif;
+    font-size: 34px;
     letter-spacing: 1px;
     color: black;
 }
@@ -187,8 +189,7 @@
     width: 100%;
 }
 
-.profile-buttons,
-.friend-profile-buttons {
+.profile-buttons {
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -200,7 +201,6 @@
 
 .profile-buttons button,
 .profile-buttons label,
-.friend-profile-buttons button,
 .card-top button,
 .view-button,
 .popup-view-button,
@@ -220,7 +220,6 @@
 }
 
 .profile-buttons label,
-.friend-profile-buttons button:first-child,
 .about-card .card-top button {
     background-color: transparent;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -230,7 +229,6 @@
 
 .profile-buttons button:hover,
 .profile-buttons label:hover,
-.friend-profile-buttons button:hover,
 .card-top button:hover,
 .view-button:hover,
 .popup-view-button:hover,
@@ -242,7 +240,6 @@
 
 .profile-buttons button:active,
 .profile-buttons label:active,
-.friend-profile-buttons button:active,
 .card-top button:active,
 .view-button:active,
 .popup-view-button:active,
@@ -254,7 +251,6 @@
 
 .profile-buttons button:focus,
 .profile-buttons label:focus,
-.friend-profile-buttons button:focus,
 .card-top button:focus,
 .view-button:focus,
 .popup-view-button:focus,
