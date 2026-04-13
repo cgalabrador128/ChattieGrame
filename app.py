@@ -66,6 +66,7 @@ def signup():
         flash("A system error occurred. Please try again later.", "error")
         return redirect(url_for('signup'))
 
+
 @app.route('/overview')
 def overview():
     if session.get('userid') is None:
@@ -107,15 +108,17 @@ def groups():
     if request.method == 'POST':
         if request.form['group-name']:
             groupName = request.form.get('group-name')
+
             if not groupName:
                 return redirect(url_for('groups'))
-            id = dat.createGroup(groupName, session.get('userid'))
-            members = dat.getGroupMembers(id)
-            groupinfo = dat.getGroup(id)
-            return redirect(url_for('view_group', groupid=str(id)), members=members, groupinfo=groupinfo)
+
+            user_id = dat.createGroup(groupName, session.get('userid'))
+
+            return redirect(url_for('view_group', groupid=str(user_id)))
+
         return redirect(url_for('groups'))
-    groups = dat.getUserGroups(session.get('userid'))
-    return render_template('groups.html', groups=groups)
+    user_groups = dat.getUserGroups(session.get('userid'))
+    return render_template('groups.html', groups=user_groups)
 
 
 @app.route('/view-group/<groupid>')

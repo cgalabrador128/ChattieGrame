@@ -76,7 +76,7 @@ def loginUser(email, password):
         if response.user:
             print("Login successful.")
             return response.user
-        
+
     except Exception as e:
         print("Login failed with error: ", e)
         return None
@@ -121,7 +121,7 @@ def getUserProfile(userid): # gets userprofile depending on the userid only
         return None
 
 def findUserProfile(searchData): # finds userprofile based on userid/name
-    
+
     try:
         response = supabase_admin.table('app_user').select("*").eq("userid", searchData).execute()
         if response.data:
@@ -138,7 +138,7 @@ def findUserProfile(searchData): # finds userprofile based on userid/name
             print("User not found")
             return None
 
-def uploadProfilePic(userid): #uploads profile picture 
+def uploadProfilePic(userid): #uploads profile picture
     for ext in [".jpg", ".jpeg", ".png", ".webp", ".gif"]:
         try:
             supabase.storage.from_("profile_images").remove([f"{userid}{ext}"])
@@ -241,10 +241,12 @@ def getGroupMembers(groupid):
 
 def getGroup(groupid):
     try:
-        return supabase_admin.table("groupie").select('*').eq('groupid', groupid).single().execute()
+        response = supabase_admin.table("groupie").select('*').eq('groupid', groupid).single().execute()
+        return response.data
     except Exception as e:
         print(e)
         return None
+
 def getUserGroups(userid):
     try:
         response = supabase.table('usergroups').select('groupid').eq('userid', userid).execute()
