@@ -19,20 +19,16 @@
 
             <div class="header-buttons-container">
                 {% if session.get('userid') == user %}
-                    <div class="header-buttons">
-                        <div class="profile-buttons">
-                            <label for="fileInput">Choose Image</label>
-                            <input type="file" id="fileInput" accept="image/*">
-                            <button onclick="uploadImage()">Update Profile</button>
-                        </div>
-                        <p id="status" class="status"></p>
+                    <div class="profile-buttons">
+                        <label for="fileInput">Choose Image</label>
+                        <input type="file" id="fileInput" accept="image/*">
+                        <button onclick="uploadImage()">Update Profile</button>
                     </div>
+                    <p id="status" class="status"></p>
                 {% else %}
                     <div class="profile-buttons">
-                        <div class="friend-profile-buttons">
-                            <button onclick="window.location.href='/messages/{{ user }}'">Chat</button>
-                            <button onclick="window.location.href='/friend_request/{{ user }}'">Add Friend</button>
-                        </div>
+                        <button onclick="window.location.href='/messages/{{ user }}'">Chat</button>
+                        <button onclick="window.location.href='/friend_request/{{ user }}'">Add Friend</button>
                     </div>
                 {% endif %}
             </div>

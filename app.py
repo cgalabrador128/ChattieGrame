@@ -1,4 +1,4 @@
-from flask import Flask, flash, session, render_template, request, redirect, url_for,jsonify
+from flask import Flask, flash, session, render_template, request, redirect, url_for, jsonify
 from flask_socketio import SocketIO, emit
 import os
 import asyncio
@@ -16,11 +16,12 @@ app.config['SESSION_PERMANENT'] = True
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
 
+
 async def supabase_listener():
     supabase: AsyncClient = await acreate_client(SUPABASE_URL, SUPABASE_KEY)
 
     def on_change(payload):
-        #print("Change: ", payload)
+        # print("Change: ", payload)
         event_data = payload['data']
         if 'INSERT' in str(event_data['type']):
             new_row = event_data['record']
@@ -115,10 +116,10 @@ def messages(id):
         if not message:
             return jsonify({"status": "error", "message": "No message content"}), 400
         dat.sendMessage(session.get('chatsession')[0], session.get('userid'), message)
-        return jsonify({'status':'success'}), 200
+        return jsonify({'status': 'success'}), 200
     if preview == []:
         preview = None
-    if id=='#':
+    if id == '#':
         pass
     else:
         try:
@@ -130,29 +131,29 @@ def messages(id):
                 print('IT RUNS')
                 user2 = dat.getUserProfile(id)
                 profile.append(user2)
-            
+
             existing = dat.findExistingChat(session.get('userid'), id)
             existing2 = dat.findChat(id)
-            if user and not existing and not existing2: 
+            if user and not existing and not existing2:
                 response = dat.generateinitialMessage(session.get("userid"), id)
                 id = response["chatid"]
                 session["chatsession"] = (id, preview, profile)
-                return render_template('messages.html',id=id, preview=preview, profile=profile, messages = None)
+                return render_template('messages.html', id=id, preview=preview, profile=profile, messages=None)
             elif not existing and existing2:
                 print('This runs')
                 user2 = dat.findChatMate(id, session.get('userid'))
                 profile.append(user2)
                 session["chatsession"] = (id, preview, profile)
                 response = dat.getMessages(id)
-                return render_template('messages.html',id=id, preview=preview, profile=profile, messages = response)
+                return render_template('messages.html', id=id, preview=preview, profile=profile, messages=response)
             elif user and existing:
                 id = existing['chatid']
                 session["chatsession"] = (id, preview, profile)
                 response = dat.getMessages(id)
-                return render_template('messages.html',id=id, preview=preview, profile=profile, messages = response)
+                return render_template('messages.html', id=id, preview=preview, profile=profile, messages=response)
         except Exception as e:
             print("err", e)
-    return render_template('messages.html', id=id, preview=preview, profile = None, messages = None)
+    return render_template('messages.html', id=id, preview=preview, profile=None, messages=None)
 
 
 @app.route('/profile/<userid>', methods=['GET', 'POST'])
@@ -161,17 +162,14 @@ def profile(userid):
         return redirect(url_for('login'))
 
     try:
-        if 'userid' in session:
-            friends = dat.getUserFriends(session.get('userid'))
-            profile = dat.getUserProfile(session.get('userid'))
-            return render_template('profile.html', user=session.get('userid'), friends=friends, profile=profile)
-        else:
-            friends = dat.getUserFriends(userid)
-            profile = dat.getUserProfile(userid)
-            return render_template('profile.html', user=userid, friends=friends, profile=profile)
+        friends = dat.getUserFriends(userid)
+        profile = dat.getUserProfile(userid)
+
+        return render_template('profile.html',user=userid,friends=friends,profile=profile)
+
     except Exception as e:
         print("Error fetching profile: ", e)
-    return render_template('profile.html', user=session.get('userid'), friends=[], profile=None)
+        return redirect(url_for('profile', userid=userid))
 
 
 @app.route('/groups', methods=['GET', 'POST'])
@@ -242,7 +240,8 @@ def definedFunc(func):
 def remove_member(userid):
     return dat.removeMember(userid)
 
+
 if __name__ == '__main__':
     sockio.start_background_task(lambda: asyncio.run(supabase_listener()))
-    
+
     app.run(debug=True)

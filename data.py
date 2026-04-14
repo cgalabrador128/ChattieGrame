@@ -238,6 +238,7 @@ def getGroup(groupid):
         print(e)
         return None
 
+
 def getUserGroups(userid):
     try:
         response = supabase.table('usergroups').select('groupid').eq('userid', userid).execute()
